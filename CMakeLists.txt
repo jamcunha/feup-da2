@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.24)
 project(feup_da2)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include_directories(feup_da1 "${CMAKE_SOURCE_DIR}/include")
+include_directories(feup_da2 "${CMAKE_SOURCE_DIR}/include")
 
 file(GLOB SRC_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
