@@ -1,5 +1,5 @@
-#ifndef FEUP_DA1_VERTEXEDGE_H
-#define FEUP_DA1_VERTEXEDGE_H
+#ifndef FEUP_DA2_VERTEXEDGE_H
+#define FEUP_DA2_VERTEXEDGE_H
 
 #include <vector>
 
@@ -257,4 +257,4 @@ public:
     void setFlow(int flow);
 };
 
-#endif // FEUP_DA1_VERTEXEDGE_H
+#endif // FEUP_DA2_VERTEXEDGE_H

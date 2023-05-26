@@ -1,5 +1,5 @@
-#ifndef FEUP_DA1_UTILS_H
-#define FEUP_DA1_UTILS_H
+#ifndef FEUP_DA2_UTILS_H
+#define FEUP_DA2_UTILS_H
 
 namespace utils {
     /**
@@ -13,4 +13,4 @@ namespace utils {
     void waitEnter();
 }
 
-#endif // FEUP_DA1_UTILS_H
+#endif // FEUP_DA2_UTILS_H

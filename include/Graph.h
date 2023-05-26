@@ -1,5 +1,5 @@
-#ifndef FEUP_DA1_GRAPH_H
-#define FEUP_DA1_GRAPH_H
+#ifndef FEUP_DA2_GRAPH_H
+#define FEUP_DA2_GRAPH_H
 
 #include "VertexEdge.h"
 
@@ -8,7 +8,7 @@
 // TODO: change documentation
 
 /**
- * @brief Railway network
+ * @brief TODO
  */
 class Graph {
 private:
@@ -69,39 +69,6 @@ public:
     bool addBidirectionalEdge(int source, int dest, int weight);
 
     /**
-     * @brief Find an augmenting path in the graph using BFS
-     * 
-     * @details Time Complexity: O(|V|+|E|)
-     * 
-     * @param source Source vertex
-     * @param dest Destination Vertex
-     * @return true Found augmenting path
-     * @return false No augmenting path
-     */
-    bool findAugmentingPath(Vertex *source, Vertex *dest) const;
-
-    /**
-     * @brief Find the maximum flow between source and destination vertex using Edmonds-Karp algorithm
-     * Used to calculate the maximum number of trains that can simultaneously travel between two stations
-     * 
-     * @details Time Complexity: O(|V||E|²)
-     * 
-     * @param source Source vertex
-     * @param dest Destination Vertex
-     * @return int max_flow or -1 if error (input or flow network is not valid)
-     */
-    int edmondsKarp(int source, const int dest) const;
-
-    /**
-     * @brief Find the minimum cost path from source to all other vertexes using Dijkstra algorithm.
-     * 
-     * @details Time Complexity: O(|V|+|E|log(|V|))
-     * 
-     * @param source Source vertex
-     */
-    void dijkstra(Vertex *source);
-
-    /**
      * @brief Get graph's number of vertexes
      * 
      * @return int Number of vertexes
@@ -116,4 +83,4 @@ public:
     std::vector<Vertex *> getVertexSet() const;
 };
 
-#endif // FEUP_DA1_GRAPH_H
+#endif // FEUP_DA2_GRAPH_H
