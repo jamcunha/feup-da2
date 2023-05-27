@@ -1,4 +1,3 @@
-
 #ifndef FEUP_DA2_MENU_H
 #define FEUP_DA2_MENU_H
 
@@ -28,6 +27,8 @@ public:
      * @brief Constructs a new Menu object
      */
     Menu();
+
+    void init();
 };
 
 #endif // FEUP_DA2_MENU_H

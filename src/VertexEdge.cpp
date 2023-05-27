@@ -32,7 +32,7 @@ std::vector<Edge *> Vertex::getIncomming() const {
     return this->_incomming;
 }
 
-int Vertex::getDistance() const{
+double Vertex::getDistance() const{
     return this->_distance;
 }
 
@@ -52,7 +52,7 @@ void Vertex::setIndegree(unsigned int indegree) {
     this->_indegree = indegree;
 }
 
-void Vertex::setDistance(int distance) {
+void Vertex::setDistance(double distance) {
     this->_distance = distance;
 }
 
@@ -60,7 +60,7 @@ void Vertex::setPath(Edge* path) {
     this->_path = path;
 }
 
-Edge* Vertex::addEdge(Vertex* dest, int weight) {
+Edge* Vertex::addEdge(Vertex* dest, double weight) {
     auto newEdge = new Edge(this, dest, weight);
     _adj.push_back(newEdge);
     dest->_incomming.push_back(newEdge);
@@ -102,7 +102,7 @@ Vertex* Edge::getDest() const {
     return this->_dest;
 }
 
-int Edge::getWeight() const {
+double Edge::getWeight() const {
     return this->_weight;
 }
 
@@ -114,7 +114,7 @@ Edge* Edge::getReverse() const {
     return this->_reverse;
 }
 
-int Edge::getFlow() const {
+double Edge::getFlow() const {
     return this->_flow;
 }
 
@@ -122,7 +122,6 @@ void Edge::setReverse(Edge* reverse) {
     this->_reverse = reverse;
 }
 
-void Edge::setFlow(int flow) {
+void Edge::setFlow(double flow) {
     this->_flow = flow;
 }
-

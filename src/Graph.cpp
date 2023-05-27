@@ -45,7 +45,7 @@ bool Graph::removeVertex(int id) {
     return true;
 }
 
-bool Graph::addEdge(int source, int dest, int weight) {
+bool Graph::addEdge(int source, int dest, double weight) {
     auto v1 = findVertex(source);
     auto v2 = findVertex(dest);
     if (v1 == nullptr || v2 == nullptr) {
@@ -56,7 +56,7 @@ bool Graph::addEdge(int source, int dest, int weight) {
     return true;
 }
 
-bool Graph::addBidirectionalEdge(int source, int dest, int weight) {
+bool Graph::addBidirectionalEdge(int source, int dest, double weight) {
     auto v1 = findVertex(source);
     auto v2 = findVertex(dest);
     if (v1 == nullptr || v2 == nullptr) {

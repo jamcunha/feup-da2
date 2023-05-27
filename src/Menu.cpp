@@ -1,6 +1,7 @@
 #include "Menu.h"
 
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -18,20 +19,37 @@ void Menu::readData() {
 
     while (getline(input, line)) {
         std::stringstream ss(line);
+        std::string origin_str, dest_str, distance;
 
-        // TODO: origin and dest is int and distance double
-        std::string origin, dest, distance;
-
-        getline(ss, origin, ',');
-        getline(ss, dest, ',');
+        getline(ss, origin_str, ',');
+        getline(ss, dest_str, ',');
         getline(ss, distance);
 
         if (line.back() == '\r' || line.back() == '\n') {
             line.pop_back(); // remove '\n' or '\r'
         }
+
+        int origin = std::stoi(origin_str);
+        int dest = std::stoi(dest_str);
+
+        // if they already exist it just exits
+        _graph.addVertex(origin);
+        _graph.addVertex(dest);
+
+        _graph.addEdge(origin, dest, std::stod(distance));
     }
 }
 
 Menu::Menu(): _graph(Graph()) {
     readData();
+}
+
+void Menu::init() {
+    // TODO: change later
+    for (Vertex* v: _graph.getVertexSet()) {
+        std::cout << "\nVertex: " << v->getId() << "\n\n";
+        for (Edge* e: v->getAdj()) {
+            std::cout << "------------ Edge: " << e->getDest()->getId() << " -------------\n";
+        }
+    }
 }

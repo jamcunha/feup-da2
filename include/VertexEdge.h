@@ -8,7 +8,7 @@
 class Edge;
 
 /**
- * @brief Represents a station in the railway network.
+ * @brief Vertex of a graph.
  */
 class Vertex {
 private:
@@ -50,7 +50,7 @@ private:
     /**
      * @brief Cost from source to the vertex
      */
-     int _distance = 0;
+     double _distance = 0;
 
 public:
     Vertex(int id);
@@ -97,7 +97,7 @@ public:
      *
      * @return Cost from source to the vertex
      */
-    int getDistance() const;
+    double getDistance() const;
 
     /**
      * @brief Get vertex path
@@ -146,7 +146,7 @@ public:
      *
      * @param distance cost from source to the vertex
      */
-    void setDistance(int distance);
+    void setDistance(double distance);
 
     /**
      * @brief Set path to vertex
@@ -162,7 +162,7 @@ public:
      * @param weight Edge weight
      * @return Edge* New edge
      */
-    Edge* addEdge(Vertex* dest, int weight);
+    Edge* addEdge(Vertex* dest, double weight);
 
     /**
      * @brief Remove an edge with the vertex as origin
@@ -175,7 +175,7 @@ public:
 };
 
 /**
- * @brief Represents the path from a station to another in the railway network 
+ * @brief Represents the path between vertexes 
  */
 class Edge {
 private:
@@ -185,9 +185,9 @@ private:
     Vertex* _dest;
     
     /**
-     * @brief Represents number of trains that can be simultainiously be in the edge
+     * @brief Distance between vertexes
      */
-    int _weight;
+    double _weight;
     
     /**
      * @brief Origin vertex
@@ -200,9 +200,9 @@ private:
     Edge* _reverse = nullptr;
 
     /**
-     * @brief Represent number of trains that are simultainiously in the edge
+     * @brief Edge flow
      */
-    int _flow;
+    double _flow;
 
 public:
     Edge(Vertex* origin, Vertex* dest, int weight);
@@ -219,7 +219,7 @@ public:
      * 
      * @return int weight
      */
-    int getWeight() const;
+    double getWeight() const;
 
     /**
      * @brief Get the origin vertex
@@ -240,7 +240,7 @@ public:
      * 
      * @return int Edge flow
      */
-    int getFlow() const;
+    double getFlow() const;
 
     /**
      * @brief Set reverse edge
@@ -254,7 +254,7 @@ public:
      * 
      * @param flow Edge flow
      */
-    void setFlow(int flow);
+    void setFlow(double flow);
 };
 
 #endif // FEUP_DA2_VERTEXEDGE_H

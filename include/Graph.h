@@ -5,10 +5,8 @@
 
 #include <vector>
 
-// TODO: change documentation
-
 /**
- * @brief TODO
+ * @brief Graph to structure the data
  */
 class Graph {
 private:
@@ -55,7 +53,7 @@ public:
      * @return true Edge was added
      * @return false Source or destination vertex does not exist
      */
-    bool addEdge(int source, int dest, int weight);
+    bool addEdge(int source, int dest, double weight);
 
     /**
      * @brief Add a edge from source to destination vertex and another edge the other way
@@ -66,7 +64,7 @@ public:
      * @return true Edge was added
      * @return false Source or destination vertex does not exist
      */
-    bool addBidirectionalEdge(int source, int dest, int weight);
+    bool addBidirectionalEdge(int source, int dest, double weight);
 
     /**
      * @brief Get graph's number of vertexes
