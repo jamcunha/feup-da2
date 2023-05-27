@@ -15,6 +15,8 @@ private:
      */
     std::vector<Vertex *> vertexSet;
 
+    void tspBacktrackBruteforce(Vertex* current, double current_cost, int num_visited, double& min_cost, std::vector<Vertex *>& tsp_path);
+
 public:
     /**
      * @brief Find a vertex in the graph with the given id, if it does not exists return nullptr
@@ -65,6 +67,8 @@ public:
      * @return false Source or destination vertex does not exist
      */
     bool addBidirectionalEdge(int source, int dest, double weight);
+
+    std::vector<Vertex *> tspBruteforce();
 
     /**
      * @brief Get graph's number of vertexes

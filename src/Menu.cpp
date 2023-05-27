@@ -36,7 +36,7 @@ void Menu::readData() {
         _graph.addVertex(origin);
         _graph.addVertex(dest);
 
-        _graph.addEdge(origin, dest, std::stod(distance));
+        _graph.addBidirectionalEdge(origin, dest, std::stod(distance));
     }
 }
 
