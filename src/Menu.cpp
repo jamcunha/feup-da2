@@ -49,9 +49,10 @@ void Menu::init() {
     double cost = _graph.tspBruteforce(tsp_path);
 
     std::cout << "Path: ";
-    for (Vertex* v: tsp_path) {
-        std::cout << v->getId() << " -> ";
+    for (int i = 0; i < tsp_path.size(); i++) {
+        std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
-    std::cout << '\n';
+
+
     std::cout << "Cost: " << cost << '\n';
 }
