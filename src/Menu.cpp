@@ -45,11 +45,13 @@ Menu::Menu(): _graph(Graph()) {
 }
 
 void Menu::init() {
-    // TODO: change later
-    for (Vertex* v: _graph.getVertexSet()) {
-        std::cout << "\nVertex: " << v->getId() << "\n\n";
-        for (Edge* e: v->getAdj()) {
-            std::cout << "------------ Edge: " << e->getDest()->getId() << " -------------\n";
-        }
+    std::vector<Vertex *> tsp_path;
+    double cost = _graph.tspBruteforce(tsp_path);
+
+    std::cout << "Path: ";
+    for (Vertex* v: tsp_path) {
+        std::cout << v->getId() << " -> ";
     }
+    std::cout << '\n';
+    std::cout << "Cost: " << cost << '\n';
 }
