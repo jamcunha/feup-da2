@@ -95,7 +95,7 @@ bool Vertex::removeEdge(int destId) {
 
 /*===== Edge =====*/
 
-Edge::Edge(Vertex* origin, Vertex* dest, int weight)
+Edge::Edge(Vertex* origin, Vertex* dest, double weight)
     : _origin(origin), _dest(dest), _weight(weight) {}
 
 Vertex* Edge::getDest() const {

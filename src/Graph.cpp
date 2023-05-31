@@ -122,12 +122,16 @@ void Graph::tspBacktrackBruteforce(Vertex* current, double current_cost, int num
 
         if (cost < min_cost) {
             min_cost = cost;
+
+            Vertex* init = findVertex(0);
+
             tsp_path.clear();
-            tsp_path.push_back(current);
+            tsp_path.push_back(init); tsp_path.push_back(current);
             //? id may not be needed
             for (Edge* e = current->getPath(); e->getOrigin()->getId() != findVertex(0)->getId(); e = e->getOrigin()->getPath()) {
                 tsp_path.push_back(e->getOrigin());
             }
+            tsp_path.push_back(init);
 
             std::reverse(tsp_path.begin(), tsp_path.end());
         }

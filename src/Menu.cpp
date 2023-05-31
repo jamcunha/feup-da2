@@ -1,5 +1,6 @@
 #include "../include/Menu.h"
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -44,14 +45,20 @@ void Menu::calculateBruteforceTSP() {
     }
 
     std::vector<Vertex *> tsp_path;
-    double cost = _graph.tspBruteforce(tsp_path);
 
-    std::cout << "TSP Path (Brute Force Algorithm): ";
-    for (Vertex* v : tsp_path) {
-        std::cout << v->getId() << " -> ";
+    auto start = std::chrono::high_resolution_clock::now();
+    double cost = _graph.tspBruteforce(tsp_path);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    std::cout << "TSP Path (Brute Force Algorithm):\n\n ";
+    std::cout << "Path: ";
+    for (int i = 0; i < tsp_path.size(); i++) {
+        std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
-    std::cout << tsp_path.front()->getId() << '\n';  // Volta ao início do caminho
-    std::cout << "TSP Cost: " << cost << '\n' << '\n';
+
+    std::cout << "Cost: " << cost << '\n';
+    std::cout << "Elapsed Time: " << duration.count() << " ms\n";
 }
 
 void Menu::calculateEuclideanTSP() {
