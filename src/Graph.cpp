@@ -262,6 +262,51 @@ double Graph::calculateTour(std::vector<Vertex*>& tsp_path) const {
     return total_distance;
 }
 
+void Graph::clearGraph() {
+    for (auto& vertex : vertexSet) {
+        delete vertex;
+    }
+    vertexSet.clear();
+}
+
+void Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
+    tsp_path.clear();
+    std::size_t num_vertices = vertexSet.size();
+    std::vector<bool> visited(num_vertices, false);
+
+    std::size_t start_idx = std::rand() % num_vertices;
+    Vertex* current = vertexSet[start_idx];
+    tsp_path.push_back(current);
+    visited[start_idx] = true;
+
+    while (tsp_path.size() < num_vertices) {
+        double min_edge_weight = std::numeric_limits<double>::infinity();
+        Vertex* next_vertex = nullptr;
+
+        for (Edge* edge : current->getAdj()) {
+            Vertex* neighbor_vertex = edge->getDest();
+            if (!visited[neighbor_vertex->getId()] && edge->getWeight() < min_edge_weight) {
+                min_edge_weight = edge->getWeight();
+                next_vertex = neighbor_vertex;
+            }
+        }
+
+        if (next_vertex == nullptr) {
+            break;
+        }
+
+        tsp_path.push_back(next_vertex);
+        visited[next_vertex->getId()] = true;
+        current = next_vertex;
+    }
+
+    if (tsp_path.size() == num_vertices) {
+        Edge* final_edge = tsp_path.back()->getEdge(vertexSet[start_idx]);
+        tsp_path.push_back(vertexSet[start_idx]);
+    }
+}
+
+
 
 
 

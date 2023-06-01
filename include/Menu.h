@@ -16,6 +16,8 @@ private:
 
     bool graphSelected;
 
+    bool algorithmSelected;
+
 
     /**
      * @brief Read graph data from a file.

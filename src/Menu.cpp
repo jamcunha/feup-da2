@@ -7,6 +7,9 @@
 #include <string>
 
 void Menu::readData(const std::string& INPUT_FILE) {
+    
+    _graph.clearGraph();
+    
     std::ifstream input(INPUT_FILE);
 
     std::string line;
@@ -57,7 +60,7 @@ void Menu::calculateBruteforceTSP() {
     }
 
     std::cout << "Cost: " << cost << '\n';
-    std::cout << "Elapsed Time: " << duration.count() << " ms\n";   
+    std::cout << "Elapsed Time: " << duration.count() << " ms\n\n";   
 }
 
 void Menu::calculateNearestNeighborTSP() {
@@ -68,27 +71,33 @@ void Menu::calculateNearestNeighborTSP() {
     }
 
     std::vector<Vertex*> tsp_path;
+    double cost = 0.0;
 
     auto start = std::chrono::high_resolution_clock::now();
-    bool success = _graph.calculateTour(tsp_path);
+
+    // Executar o algoritmo do Nearest Neighbor
+    _graph.tspNearestNeighbor(tsp_path);
+
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
 
-    if (success) {
-        std::cout << "TSP Path (Nearest Neighbor): ";
-        for (int i = 0; i < tsp_path.size(); i++) {
-            std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
-        }
-
-        double cost = _graph.calculateTourDistance(tsp_path[0]);
-        std::cout << "Cost: " << cost << '\n';
-    } else {
-        std::cout << "Error: Could not calculate the tour.\n";
+    // Imprimir o caminho encontrado
+    std::cout << "TSP Path (Nearest Neighbor): ";
+    for (int i = 0; i < tsp_path.size(); i++) {
+        std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
 
-    std::cout << "Elapsed Time: " << duration.count() << " ms\n";
+    // Calcular o custo total do caminho
+    for (int i = 0; i < tsp_path.size() - 1; i++) {
+        Edge* edge = tsp_path[i]->getEdge(tsp_path[i + 1]);
+        cost += edge->getWeight();
+    }
 
+    // Imprimir o custo total e o tempo de execução
+    std::cout << "Cost: " << cost << '\n';
+    std::cout << "Elapsed Time: " << duration.count() << " ms\n\n";
 }
+
 
 
 void Menu::init() {
@@ -233,7 +242,7 @@ void Menu::graphSelectionMenu() {
 }
 
 void Menu::algorithmSelectionMenu() {
-    bool algorithmSelected = false;
+    algorithmSelected = false;
 
     while (!algorithmSelected) {
         std::cout << "Algorithm Selection:\n";
@@ -274,5 +283,11 @@ void Menu::algorithmSelectionMenu() {
                 break;
         }
     }
+}
+
+Menu::Menu() {
+    graphSelected = false;
+    algorithmSelected = false;
+    
 }
 

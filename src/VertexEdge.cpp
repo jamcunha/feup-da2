@@ -93,6 +93,15 @@ bool Vertex::removeEdge(int destId) {
     return edgeRemoved;
 }
 
+Edge* Vertex::getEdge(Vertex* dest) const {
+    for (Edge* edge : _adj) {
+        if (edge->getDest() == dest) {
+            return edge;
+        }
+    }
+    return nullptr;
+}
+
 /*===== Edge =====*/
 
 Edge::Edge(Vertex* origin, Vertex* dest, double weight)

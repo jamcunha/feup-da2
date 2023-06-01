@@ -133,6 +133,14 @@ public:
      */
     double calculateTour(std::vector<Vertex*>& tsp_path) const;
 
+    /**
+     * @brief Clears the graph by removing all vertices and edges.
+     */
+    void clearGraph();
+
+    void tspNearestNeighbor(std::vector<Vertex*>& tsp_path);
+
+
 };
 
 #endif // FEUP_DA2_GRAPH_H

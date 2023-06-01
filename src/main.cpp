@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../include/Menu.h"
+#include "Menu.h"
 
 int main() {
 

@@ -172,6 +172,15 @@ public:
      * @return false Vertex does not exist
      */
     bool removeEdge(int destId);
+
+    /**
+     * @brief Gets the edge connecting this vertex to the specified destination vertex.
+     * 
+     * @param dest The destination vertex.
+     * @return The edge connecting this vertex to the destination vertex, or nullptr if not found.
+     */
+    Edge* getEdge(Vertex* dest) const;
+
 };
 
 /**
