@@ -51,33 +51,45 @@ void Menu::calculateBruteforceTSP() {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
 
-    std::cout << "TSP Path (Brute Force Algorithm):\n\n ";
-    std::cout << "Path: ";
+    std::cout << "TSP Path (Brute Force Algorithm):";
     for (int i = 0; i < tsp_path.size(); i++) {
         std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
 
     std::cout << "Cost: " << cost << '\n';
-    std::cout << "Elapsed Time: " << duration.count() << " ms\n";
+    std::cout << "Elapsed Time: " << duration.count() << " ms\n";   
 }
 
-void Menu::calculateEuclideanTSP() {
+void Menu::calculateNearestNeighborTSP() {
     // Verificar se um grafo foi selecionado
     if (!graphSelected) {
         std::cout << "No graph selected. Please select a graph first.\n\n";
         return;
     }
 
-    std::vector<Vertex *> tsp_path;
-    double cost = _graph.tspEuclideanBruteforce(tsp_path);
+    std::vector<Vertex*> tsp_path;
 
-    std::cout << "Euclidean TSP Path (Brute Force Algorithm): ";
-    for (Vertex* v : tsp_path) {
-        std::cout << v->getId() << " -> ";
+    auto start = std::chrono::high_resolution_clock::now();
+    bool success = _graph.calculateTour(tsp_path);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    if (success) {
+        std::cout << "TSP Path (Nearest Neighbor): ";
+        for (int i = 0; i < tsp_path.size(); i++) {
+            std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
+        }
+
+        double cost = _graph.calculateTourDistance(tsp_path[0]);
+        std::cout << "Cost: " << cost << '\n';
+    } else {
+        std::cout << "Error: Could not calculate the tour.\n";
     }
-    std::cout << tsp_path.front()->getId() << '\n';  // Volta ao início do caminho
-    std::cout << "Euclidean TSP Cost: " << cost << '\n' << '\n';
+
+    std::cout << "Elapsed Time: " << duration.count() << " ms\n";
+
 }
+
 
 void Menu::init() {
     bool exit = false;
@@ -227,7 +239,7 @@ void Menu::algorithmSelectionMenu() {
         std::cout << "Algorithm Selection:\n";
         std::cout << "1. Calculate TSP (Brute Force)\n";
         std::cout << "2. Triangular Approximation \n";
-        std::cout << "3. Calculate Euclidean TSP (Brute Force)\n";
+        std::cout << "3. Calculate TSP (Nearest Neighbor)\n";
         std::cout << "4. Back\n";
         std::cout << "Enter your choice: ";
 
@@ -249,8 +261,8 @@ void Menu::algorithmSelectionMenu() {
                 break;
             case 3:
                 clearTerminal();
-                std::cout << "Selected Euclidean TSP (Brute Force) Algorithm.\n\n";
-                calculateEuclideanTSP();
+                std::cout << "Selected TSP (Nearest Neighbor) Algorithm.\n\n";
+                calculateNearestNeighborTSP();
                 algorithmSelected = true;
                 break;
             case 4:

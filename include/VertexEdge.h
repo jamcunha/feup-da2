@@ -204,6 +204,11 @@ private:
      */
     double _flow;
 
+    /**
+     * @brief Distance between vertexes
+     */
+    double _distance;
+
 public:
     Edge(Vertex* origin, Vertex* dest, double weight);
 
@@ -255,6 +260,21 @@ public:
      * @param flow Edge flow
      */
     void setFlow(double flow);
+
+    /**
+     * @brief Get the distance.
+     *
+     * @return The distance.
+     */
+    double getDistance() const;
+
+    /**
+     * @brief Set the distance.
+     *
+     * @param distance The distance to set.
+     */
+    void setDistance(double distance);
+
 };
 
 #endif // FEUP_DA2_VERTEXEDGE_H

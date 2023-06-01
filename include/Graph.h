@@ -3,7 +3,12 @@
 
 #include "VertexEdge.h"
 
+#include <string>
 #include <vector>
+#include <limits>
+
+
+const double INF = std::numeric_limits<double>::infinity();
 
 /**
  * @brief Graph to structure the data
@@ -16,6 +21,20 @@ private:
     std::vector<Vertex *> vertexSet;
 
     void tspBacktrackBruteforce(Vertex* current, double current_cost, int num_visited, double& min_cost, std::vector<Vertex *> &tsp_path);
+
+    /**
+     * @brief 
+     * 
+     * @details 
+     * 
+     * @param int 
+     * @return 
+     */
+    Edge* getNearestVertex(Vertex* v);
+
+    double distance;
+
+    std::string order;
 
 public:
     /**
@@ -91,6 +110,29 @@ public:
      * @return std::vector<Vertex *> vertexSet
      */
     std::vector<Vertex *> getVertexSet() const;
+
+    /**
+     * @brief Mark all vertices as unvisited
+     * 
+     */
+    void markAllUnvisited();
+
+    /**
+     * @brief Calculate the tour distance
+     * 
+     * @param start 
+     * @return double 
+     */
+    double calculateTourDistance(Vertex* start) const;
+
+    /**
+     * @brief Get the Nearest Neighbor object
+     * 
+     * @param idx 
+     * @return bool 
+     */
+    double calculateTour(std::vector<Vertex*>& tsp_path) const;
+
 };
 
 #endif // FEUP_DA2_GRAPH_H

@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <limits>
 #include <queue>
+#include <iostream>
+#include <sstream>
+
 
 Vertex* Graph::findVertex(int id) const {
     for (auto v: vertexSet) {
@@ -172,3 +175,93 @@ int Graph::getNumVertex() const {
 std::vector<Vertex *> Graph::getVertexSet() const {
     return this->vertexSet;
 }
+
+//=======================================4.3 -> NearestNeighbor=================================================
+
+void Graph::markAllUnvisited() {
+    for (auto v : vertexSet) {
+        v->setVisited(false);
+    }
+}
+
+Edge* Graph::getNearestVertex(Vertex* v) {
+    double distance = INF;
+    Edge* nearest_vertex_path = nullptr;
+
+    for (auto e : v->getAdj()) {
+        if (e->getDest()->isVisited())
+            continue;
+
+        if (e->getDistance() < distance) {
+            distance = e->getDistance();
+            nearest_vertex_path = e;
+        }
+    }
+
+    return nearest_vertex_path;
+}
+
+double Graph::calculateTourDistance(Vertex* start) const {
+    double totalDistance = 0.0;
+    Vertex* current = start;
+
+    do {
+        Edge* path = current->getPath();
+        totalDistance += path->getWeight();
+        current = path->getDest();
+    } while (current != start);
+
+    return totalDistance;
+}
+
+double Graph::calculateTour(std::vector<Vertex*>& tsp_path) const {
+    std::size_t num_vertices = vertexSet.size();
+    std::vector<bool> visited(num_vertices, false);
+    tsp_path.clear();
+
+    // Seleciona um vértice de partida aleatoriamente
+    std::size_t start_idx = std::rand() % num_vertices;
+    tsp_path.push_back(vertexSet[start_idx]);
+    visited[start_idx] = true;
+
+    double total_distance = 0.0;
+
+    while (tsp_path.size() < num_vertices) {
+        Vertex* current_vertex = tsp_path.back();
+        double min_edge_weight = std::numeric_limits<double>::infinity();
+        Vertex* next_vertex = nullptr;
+
+        // Encontra o vértice não visitado mais próximo
+        for (Edge* edge : current_vertex->getAdj()) {
+            Vertex* neighbor_vertex = edge->getDest();
+            if (!visited[neighbor_vertex->getId()] && edge->getWeight() < min_edge_weight) {
+                min_edge_weight = edge->getWeight();
+                next_vertex = neighbor_vertex;
+            }
+        }
+
+        if (next_vertex == nullptr) {
+            // Não há mais vértices não visitados para conectar, encerra o ciclo
+            break;
+        }
+
+        tsp_path.push_back(next_vertex);
+        visited[next_vertex->getId()] = true;
+        total_distance += min_edge_weight;
+    }
+
+    if (tsp_path.size() == num_vertices) {
+        // Fecha o ciclo adicionando a aresta final
+        Edge* final_edge = tsp_path.back()->getPath();
+        total_distance += final_edge->getWeight();
+    } else {
+        // Não foi possível conectar todos os vértices, retorna -1 para indicar falha
+        total_distance = -1.0;
+    }
+
+    return total_distance;
+}
+
+
+
+

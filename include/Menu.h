@@ -3,6 +3,7 @@
 
 #include "Graph.h"
 #include "Utils.h"
+#include "VertexEdge.h"
 
 #include <string>
 
@@ -31,7 +32,7 @@ private:
     /**
      * @brief Calculate the Euclidean Traveling Salesman Problem (TSP) using the brute force algorithm.
      */
-    void calculateEuclideanTSP();
+    void calculateNearestNeighborTSP();
 
     /**
      * @brief Display the graph selection menu.
@@ -44,6 +45,11 @@ private:
     void algorithmSelectionMenu();
 
 public:
+    /**
+     * @brief Constructs a new Menu object
+     */
+    Menu();
+    
     /**
      * @brief Initialize the menu.
      */

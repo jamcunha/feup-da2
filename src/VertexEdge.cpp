@@ -125,3 +125,11 @@ void Edge::setReverse(Edge* reverse) {
 void Edge::setFlow(double flow) {
     this->_flow = flow;
 }
+
+double Edge::getDistance() const {
+    return this->_distance;
+}
+
+void Edge::setDistance(double distance) {
+    this->_distance = distance;
+}
