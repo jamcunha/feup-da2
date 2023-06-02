@@ -85,12 +85,13 @@ void Menu::calculateTriangularApproximation() {
             }
         }
     }
-    std::cout << "Cost: " << cost << "\n";
     std::cout << "Path: ";
     for (int i = 0; i < tsp_path.size(); i++) {
         std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
 
+    std::cout << "Cost: " << cost << "\n";
+    
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
     std::cout << "Elapsed Time: " << duration.count() << " ms\n\n";
@@ -109,25 +110,21 @@ void Menu::calculateNearestNeighborTSP() {
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    // Executar o algoritmo do Nearest Neighbor
     _graph.tspNearestNeighbor(tsp_path);
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
 
-    // Imprimir o caminho encontrado
     std::cout << "TSP Path (Nearest Neighbor): ";
     for (int i = 0; i < tsp_path.size(); i++) {
         std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
 
-    // Calcular o custo total do caminho
     for (int i = 0; i < tsp_path.size() - 1; i++) {
         Edge* edge = tsp_path[i]->getEdge(tsp_path[i + 1]);
         cost += edge->getWeight();
     }
 
-    // Imprimir o custo total e o tempo de execução
     std::cout << "Cost: " << cost << '\n';
     std::cout << "Elapsed Time: " << duration.count() << " ms\n\n";
 }

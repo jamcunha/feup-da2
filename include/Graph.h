@@ -2,6 +2,7 @@
 #define FEUP_DA2_GRAPH_H
 
 #include "VertexEdge.h"
+#include "MutablePriorityQueue.h"
 
 #include <string>
 #include <vector>
@@ -110,6 +111,10 @@ public:
      * @return std::vector<Vertex *> vertexSet
      */
     std::vector<Vertex *> getVertexSet() const;
+
+    void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original);
+
+    void preorderMST(Vertex *current, std::vector<Vertex *> &result, Graph &original);
 
     /**
      * @brief Mark all vertices as unvisited

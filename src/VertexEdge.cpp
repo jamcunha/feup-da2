@@ -93,6 +93,10 @@ bool Vertex::removeEdge(int destId) {
     return edgeRemoved;
 }
 
+bool Vertex::operator<(Vertex & vertex) const {
+    return this->getDistance() < vertex.getDistance();
+}
+
 Edge* Vertex::getEdge(Vertex* dest) const {
     for (Edge* edge : _adj) {
         if (edge->getDest() == dest) {
