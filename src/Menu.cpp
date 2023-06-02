@@ -7,7 +7,7 @@
 
 // To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/edges.csv'
 // To work with `Toy-Graphs` import '../data/Toy-Graphs/{file}.csv'
-const std::string Menu::INPUT_FILE = "../data/Toy-Graphs/shipping.csv";
+const std::string Menu::INPUT_FILE = "../data/Extra/edges_25.csv";
 
 void Menu::readData() {
     std::ifstream input(INPUT_FILE);
@@ -36,7 +36,7 @@ void Menu::readData() {
         _graph.addVertex(origin);
         _graph.addVertex(dest);
 
-        _graph.addEdge(origin, dest, std::stod(distance));
+        _graph.addBidirectionalEdge(origin, dest, std::stod(distance));
     }
 }
 
@@ -45,11 +45,22 @@ Menu::Menu(): _graph(Graph()) {
 }
 
 void Menu::init() {
-    // TODO: change later
-    for (Vertex* v: _graph.getVertexSet()) {
-        std::cout << "\nVertex: " << v->getId() << "\n\n";
-        for (Edge* e: v->getAdj()) {
-            std::cout << "------------ Edge: " << e->getDest()->getId() << " -------------\n";
+    std::vector<Vertex *> tsp_path;
+    double cost = 0;
+    Vertex* source = _graph.findVertex(0);
+    _graph.prim(source,tsp_path, cost);
+    tsp_path.push_back(source);
+    for (std::vector<Vertex *>::iterator it = tsp_path.begin(); it != tsp_path.end()-1; it++){
+        std::vector<Vertex *>::iterator it2 = next(it, 1);
+        for(auto e : (*it)->getAdj()){
+            if (e->getDest()->getId() == (*it2)->getId()){
+                cost += e->getWeight();
+            }
         }
+    }
+    std::cout << cost << "\n";
+    std::cout << "Path: ";
+    for (int i = 0; i < tsp_path.size(); i++) {
+        std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
 }

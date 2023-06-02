@@ -79,6 +79,10 @@ public:
      * @return std::vector<Vertex *> vertexSet
      */
     std::vector<Vertex *> getVertexSet() const;
+
+    void preorderMST(Vertex *current, std::vector<Vertex *> &result, double &cost);
+
+    void prim(Vertex *source, std::vector<Vertex *> &result, double &cost);
 };
 
 #endif // FEUP_DA2_GRAPH_H
