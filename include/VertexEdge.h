@@ -53,6 +53,10 @@ private:
      double _distance = 0;
 
 public:
+    int queueIndex = 0;
+
+    bool operator<(Vertex & vertex) const;
+
     Vertex(int id);
 
     /**

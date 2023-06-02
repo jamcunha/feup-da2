@@ -8,7 +8,7 @@ include_directories(feup_da2 "${CMAKE_SOURCE_DIR}/include")
 
 file(GLOB SRC_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
-add_executable(feup_da2 ${SRC_FILES})
+add_executable(feup_da2 ${SRC_FILES} include/MutablePriorityQueue.h)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)

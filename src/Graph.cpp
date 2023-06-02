@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "MutablePriorityQueue.h"
 
 #include <algorithm>
 #include <limits>
@@ -81,47 +82,57 @@ std::vector<Vertex *> Graph::getVertexSet() const {
     return this->vertexSet;
 }
 
-void Graph::prim(Vertex* source, std::vector<Vertex*> &result, double &cost){
-    auto cmp = [](Vertex* a, Vertex* b) {
+void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph &mst, Graph &original){
+    /*auto cmp = [](Vertex* a, Vertex* b) {
         return a->getDistance() > b->getDistance();
-    };
-    std::priority_queue<Vertex *, std::vector<Vertex *>, decltype(cmp)> pq(cmp);
-
+    };*/
+    //std::priority_queue<Vertex *, std::vector<Vertex *>, decltype(cmp)> pq(cmp);
+    MutablePriorityQueue<Vertex> pq;
     for (Vertex* v: vertexSet) {
+        mst.addVertex(v->getId());
         v->setVisited(false);
         v->setDistance(std::numeric_limits<double>::max());
         v->setPath(nullptr);
     }
 
     source->setDistance(0);
-    pq.push(source);
+    pq.insert(source);
     while (!pq.empty()) {
-        Vertex* u = pq.top(); pq.pop();
+        Vertex* u = pq.extractMin();
+        if (u->isVisited())
+            continue;
         u->setVisited(true);
-
+        if (u->getId()!=source->getId())
+            mst.addBidirectionalEdge(u->getPath()->getOrigin()->getId(), u->getId(), u->getPath()->getWeight());
         for (Edge* e: u->getAdj()) {
             Vertex* v = e->getDest();
             double w = e->getWeight();
             if (!v->isVisited() && w < v->getDistance()) {
+                double previous = v->getDistance();
                 v->setDistance(w);
                 v->setPath(e);
-                pq.push(v);
+                if (previous == std::numeric_limits<double>::max())
+                    pq.insert(v);
+                else
+                    pq.decreaseKey(v);
             }
         }
     }
     for (Vertex* v: vertexSet) {
         v->setVisited(false);
     }
-    preorderMST(source, result, cost);
+    Vertex* v = mst.findVertex(0);
+    preorderMST(v, result, original);
 }
 
-void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, double &cost){
-    result.push_back(current);
+void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &original){
+    Vertex* v = original.findVertex(current->getId());
+    result.push_back(v);
     current->setVisited(true);
     for (Edge* e: current->getAdj()) {
         Vertex* w = e->getDest();
-        if (!w->isVisited() && w->getPath()->getOrigin()->getId()==current->getId()) {
-            preorderMST(w, result, cost);
+        if (!w->isVisited()) {
+            preorderMST(w, result, original);
         }
     }
 }

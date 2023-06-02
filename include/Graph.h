@@ -80,9 +80,9 @@ public:
      */
     std::vector<Vertex *> getVertexSet() const;
 
-    void preorderMST(Vertex *current, std::vector<Vertex *> &result, double &cost);
+    void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original);
 
-    void prim(Vertex *source, std::vector<Vertex *> &result, double &cost);
+    void preorderMST(Vertex *current, std::vector<Vertex *> &result, Graph &original);
 };
 
 #endif // FEUP_DA2_GRAPH_H

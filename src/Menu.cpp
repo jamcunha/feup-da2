@@ -7,7 +7,7 @@
 
 // To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/edges.csv'
 // To work with `Toy-Graphs` import '../data/Toy-Graphs/{file}.csv'
-const std::string Menu::INPUT_FILE = "../data/Extra/edges_25.csv";
+const std::string Menu::INPUT_FILE = "../data/Extra/edges_75.csv";
 
 void Menu::readData() {
     std::ifstream input(INPUT_FILE);
@@ -47,8 +47,9 @@ Menu::Menu(): _graph(Graph()) {
 void Menu::init() {
     std::vector<Vertex *> tsp_path;
     double cost = 0;
+    Graph mst = Graph();
     Vertex* source = _graph.findVertex(0);
-    _graph.prim(source,tsp_path, cost);
+    _graph.prim(source,tsp_path, mst, _graph);
     tsp_path.push_back(source);
     for (std::vector<Vertex *>::iterator it = tsp_path.begin(); it != tsp_path.end()-1; it++){
         std::vector<Vertex *>::iterator it2 = next(it, 1);
