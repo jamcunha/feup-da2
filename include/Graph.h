@@ -118,27 +118,17 @@ public:
     void markAllUnvisited();
 
     /**
-     * @brief Calculate the tour distance
-     * 
-     * @param start 
-     * @return double 
-     */
-    double calculateTourDistance(Vertex* start) const;
-
-    /**
-     * @brief Get the Nearest Neighbor object
-     * 
-     * @param idx 
-     * @return bool 
-     */
-    double calculateTour(std::vector<Vertex*>& tsp_path) const;
-
-    /**
      * @brief Clears the graph by removing all vertices and edges.
      */
     void clearGraph();
 
+    /**
+    * @brief Calculate the TSP path using the Nearest Neighbor algorithm
+    * 
+    * @param tsp_path The vector to store the TSP path (output parameter)
+    */
     void tspNearestNeighbor(std::vector<Vertex*>& tsp_path);
+
 
 
 };
