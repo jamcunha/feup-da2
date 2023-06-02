@@ -1,5 +1,6 @@
 #include "Menu.h"
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -7,7 +8,7 @@
 
 // To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/edges.csv'
 // To work with `Toy-Graphs` import '../data/Toy-Graphs/{file}.csv'
-const std::string Menu::INPUT_FILE = "../data/Extra/edges_75.csv";
+const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph2/edges.csv";
 
 void Menu::readData() {
     std::ifstream input(INPUT_FILE);
@@ -47,6 +48,9 @@ Menu::Menu(): _graph(Graph()) {
 void Menu::init() {
     std::vector<Vertex *> tsp_path;
     double cost = 0;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     Graph mst = Graph();
     Vertex* source = _graph.findVertex(0);
     _graph.prim(source,tsp_path, mst, _graph, cost);
@@ -60,9 +64,14 @@ void Menu::init() {
             }
         }
     }*/
-    std::cout << cost << "\n";
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
     std::cout << "Path: ";
     for (int i = 0; i < tsp_path.size(); i++) {
         std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
+    std::cout << "Cost: " << cost << "\n";
+    std::cout << "Elapsed time: " << duration.count() << " ms\n";
 }
