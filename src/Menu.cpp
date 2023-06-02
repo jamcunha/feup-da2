@@ -41,7 +41,6 @@ void Menu::readData(const std::string& INPUT_FILE) {
 }
 
 void Menu::calculateBruteforceTSP() {
-    // Verificar se um grafo foi selecionado
     if (!graphSelected) {
         std::cout << "No graph selected. Please select a graph first.\n\n";
         return;
@@ -63,8 +62,43 @@ void Menu::calculateBruteforceTSP() {
     std::cout << "Elapsed Time: " << duration.count() << " ms\n\n";   
 }
 
+void Menu::calculateTriangularApproximation() {
+    if (!graphSelected) {
+        std::cout << "No graph selected. Please select a graph first.\n\n";
+        return;
+    }
+
+    std::vector<Vertex *> tsp_path;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    double cost = 0;
+    Graph mst = Graph();
+    Vertex* source = _graph.findVertex(0);
+    _graph.prim(source, tsp_path, mst, _graph);
+    tsp_path.push_back(source);
+    for (std::vector<Vertex *>::iterator it = tsp_path.begin(); it != tsp_path.end()-1; it++){
+        std::vector<Vertex *>::iterator it2 = next(it, 1);
+        for(auto e : (*it)->getAdj()){
+            if (e->getDest()->getId() == (*it2)->getId()){
+                cost += e->getWeight();
+            }
+        }
+    }
+    std::cout << "Cost: " << cost << "\n";
+    std::cout << "Path: ";
+    for (int i = 0; i < tsp_path.size(); i++) {
+        std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+    std::cout << "Elapsed Time: " << duration.count() << " ms\n\n";
+}
+
+
+
 void Menu::calculateNearestNeighborTSP() {
-    // Verificar se um grafo foi selecionado
     if (!graphSelected) {
         std::cout << "No graph selected. Please select a graph first.\n\n";
         return;
@@ -247,7 +281,7 @@ void Menu::algorithmSelectionMenu() {
     while (!algorithmSelected) {
         std::cout << "Algorithm Selection:\n";
         std::cout << "1. Calculate TSP (Brute Force)\n";
-        std::cout << "2. Triangular Approximation \n";
+        std::cout << "2. Calculate TSP (Triangular Approximation Heuristic) \n";
         std::cout << "3. Calculate TSP (Nearest Neighbor)\n";
         std::cout << "4. Back\n";
         std::cout << "Enter your choice: ";
@@ -264,8 +298,8 @@ void Menu::algorithmSelectionMenu() {
                 break;
             case 2:
                 clearTerminal();
-                std::cout << "Selected Triangular Approximation Algorithm.\n\n";
-                //calculateTriangularApproximation();
+                std::cout << "Selected TSP (Triangular Approximation Heuristic).\n\n";
+                calculateTriangularApproximation();
                 algorithmSelected = true;
                 break;
             case 3:

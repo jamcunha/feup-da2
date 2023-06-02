@@ -32,7 +32,12 @@ private:
     void calculateBruteforceTSP();
 
     /**
-     * @brief Calculate the Euclidean Traveling Salesman Problem (TSP) using the brute force algorithm.
+     * @brief Calculate the Euclidean Traveling Salesman Problem (TSP) using the Triangular Approximation algorithm.
+     */
+    void calculateTriangularApproximation();
+
+    /**
+     * @brief Calculate the Euclidean Traveling Salesman Problem (TSP) using the Nearest Neighbor algorithm.
      */
     void calculateNearestNeighborTSP();
 
