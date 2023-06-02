@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <limits>
 #include <queue>
+#include <iostream>
 
 Vertex* Graph::findVertex(int id) const {
     for (auto v: vertexSet) {
@@ -47,6 +48,19 @@ bool Graph::removeVertex(int id) {
     return true;
 }
 
+double Graph::findWeightEdge(int source, int dest){
+    auto v1 = findVertex(source);
+    if (v1 == nullptr) {
+        return 0;
+    }
+    for (auto adj : v1->getAdj()){
+        if (adj->getDest()->getId() == dest){
+            return adj->getWeight();
+        }
+    }
+    return 0;
+}
+
 bool Graph::addEdge(int source, int dest, double weight) {
     auto v1 = findVertex(source);
     auto v2 = findVertex(dest);
@@ -82,7 +96,7 @@ std::vector<Vertex *> Graph::getVertexSet() const {
     return this->vertexSet;
 }
 
-void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph &mst, Graph &original){
+void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph &mst, Graph &original, double &cost){
     /*auto cmp = [](Vertex* a, Vertex* b) {
         return a->getDistance() > b->getDistance();
     };*/
@@ -122,17 +136,29 @@ void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph &mst, Graph
         v->setVisited(false);
     }
     Vertex* v = mst.findVertex(0);
-    preorderMST(v, result, original);
+    int prev;
+    preorderMST(v, result, original, cost, prev);
 }
 
-void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &original){
+void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &original, double &cost, int &prev){
     Vertex* v = original.findVertex(current->getId());
     result.push_back(v);
     current->setVisited(true);
+    bool flag = true;
     for (Edge* e: current->getAdj()) {
+        if (flag && !e->getDest()->isVisited()){
+            cost += e->getWeight();
+            prev = e->getDest()->getId();
+
+        }
+        else if (!e->getDest()->isVisited()){
+            cost += original.findWeightEdge(prev, e->getDest()->getId());
+            prev = e->getDest()->getId();
+        }
+        flag = false;
         Vertex* w = e->getDest();
         if (!w->isVisited()) {
-            preorderMST(w, result, original);
+            preorderMST(w, result, original, cost, prev);
         }
     }
 }

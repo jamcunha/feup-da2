@@ -49,16 +49,17 @@ void Menu::init() {
     double cost = 0;
     Graph mst = Graph();
     Vertex* source = _graph.findVertex(0);
-    _graph.prim(source,tsp_path, mst, _graph);
+    _graph.prim(source,tsp_path, mst, _graph, cost);
+    cost+=_graph.findWeightEdge((*(tsp_path.rbegin()))->getId(), source->getId());
     tsp_path.push_back(source);
-    for (std::vector<Vertex *>::iterator it = tsp_path.begin(); it != tsp_path.end()-1; it++){
+    /*for (std::vector<Vertex *>::iterator it = tsp_path.begin(); it != tsp_path.end()-1; it++){
         std::vector<Vertex *>::iterator it2 = next(it, 1);
         for(auto e : (*it)->getAdj()){
             if (e->getDest()->getId() == (*it2)->getId()){
                 cost += e->getWeight();
             }
         }
-    }
+    }*/
     std::cout << cost << "\n";
     std::cout << "Path: ";
     for (int i = 0; i < tsp_path.size(); i++) {

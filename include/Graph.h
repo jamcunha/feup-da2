@@ -80,9 +80,11 @@ public:
      */
     std::vector<Vertex *> getVertexSet() const;
 
-    void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original);
+    void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original, double &cost);
 
-    void preorderMST(Vertex *current, std::vector<Vertex *> &result, Graph &original);
+    void preorderMST(Vertex *current, std::vector<Vertex *> &result, Graph &original, double &cost, int &prev);
+
+    double findWeightEdge(int source, int dest);
 };
 
 #endif // FEUP_DA2_GRAPH_H
