@@ -180,7 +180,7 @@ public:
     bool removeEdge(int destId);
 };
 
-class LongLatVertex: Vertex {
+class LongLatVertex: public Vertex {
 private:
     double _long;
     double _lat;

@@ -10,39 +10,105 @@
 // To work with `Toy-Graphs` import '../data/Toy-Graphs/{file}.csv'
 const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph2/edges.csv";
 
-void Menu::readData() {
-    std::ifstream input(INPUT_FILE);
+const std::string Menu::NODE_FILE = "../data/Real-World-Graphs/graph2/node.csv";
 
-    std::string line;
+void Menu::readData(bool coordinateMode) {
+    // TODO: change after
+    if (!coordinateMode || true) {
+        std::ifstream input(INPUT_FILE);
 
-    //discard first line
-    getline(input, line);
-
-    while (getline(input, line)) {
-        std::stringstream ss(line);
-        std::string origin_str, dest_str, distance;
-
-        getline(ss, origin_str, ',');
-        getline(ss, dest_str, ',');
-        getline(ss, distance);
-
-        if (line.back() == '\r' || line.back() == '\n') {
-            line.pop_back(); // remove '\n' or '\r'
+        if (!input.is_open()) {
+            std::cout << "Error opening the file\n";
+            exit(1);
         }
 
-        int origin = std::stoi(origin_str);
-        int dest = std::stoi(dest_str);
+        std::string line;
 
-        // if they already exist it just exits
-        _graph.addVertex(origin);
-        _graph.addVertex(dest);
+        //discard first line
+        getline(input, line);
 
-        _graph.addBidirectionalEdge(origin, dest, std::stod(distance));
+        while (getline(input, line)) {
+            std::stringstream ss(line);
+            std::string origin_str, dest_str, distance;
+
+            getline(ss, origin_str, ',');
+            getline(ss, dest_str, ',');
+            getline(ss, distance);
+
+            if (line.back() == '\r' || line.back() == '\n') {
+                line.pop_back(); // remove '\n' or '\r'
+            }
+
+            int origin = std::stoi(origin_str);
+            int dest = std::stoi(dest_str);
+
+            // if they already exist it just exits
+            _graph.addVertex(origin);
+            _graph.addVertex(dest);
+
+            _graph.addBidirectionalEdge(origin, dest, std::stod(distance));
+        }
+
+        input.close();
+    } else { // TODO: to be tested
+        std::ifstream node(NODE_FILE);
+        std::ifstream edge(INPUT_FILE);
+
+        if (!node.is_open() || !edge.is_open()) {
+            std::cout << "Error opening a file\n";
+            exit(1);
+        }
+
+        std::string line;
+
+        // discard first line
+        getline(node, line);
+        getline(edge, line);
+
+        while (getline(node, line)) {
+            std::stringstream ss(line);
+            std::string id_str, long_str, lat_str;
+
+            getline(ss, id_str, ',');
+            getline(ss, long_str, ',');
+            getline(ss, lat_str);
+
+            if (line.back() == '\r' || line.back() == '\n') {
+                line.pop_back(); // remove '\n' or '\r'
+            }
+
+            _graph.addVertex(std::stoi(id_str), std::stod(long_str), std::stod(lat_str));
+        }
+
+        while (getline(edge, line)) {
+            std::stringstream ss(line);
+            std::string origin_str, dest_str, distance;
+
+            getline(ss, origin_str, ',');
+            getline(ss, dest_str, ',');
+            getline(ss, distance);
+
+            if (line.back() == '\r' || line.back() == '\n') {
+                line.pop_back(); // remove '\n' or '\r'
+            }
+
+            int origin = std::stoi(origin_str);
+            int dest = std::stoi(dest_str);
+
+            _graph.addBidirectionalEdge(origin, dest, std::stod(distance));
+        }
+
+        node.close();
+        edge.close();
     }
 }
 
-Menu::Menu(): _graph(Graph()) {
-    readData();
+Menu::Menu() {
+    //! refactor later
+    bool coordinateMode = true;
+
+    this->_graph = new Graph(coordinateMode);
+    readData(true);
 }
 
 void Menu::init() {
@@ -51,7 +117,8 @@ void Menu::init() {
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    Graph mst = Graph();
+    // after this could be moved to graph class and have coordinateMode from that (or simply hard code depending on the option selected)
+    Graph mst = Graph(true);
     Vertex* source = _graph.findVertex(0);
     _graph.prim(source,tsp_path, mst, _graph, cost);
     cost+=_graph.findWeightEdge((*(tsp_path.rbegin()))->getId(), source->getId());

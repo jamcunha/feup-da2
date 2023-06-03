@@ -6,6 +6,8 @@
 #include <queue>
 #include <iostream>
 
+Graph::Graph(bool coordinateMode): _coordinate_mode(coordinateMode) {}
+
 Vertex* Graph::findVertex(int id) const {
     for (auto v: vertexSet) {
         if (v->getId() == id) {
@@ -22,6 +24,19 @@ bool Graph::addVertex(int id) {
     }
 
     vertexSet.push_back(new Vertex(id));
+    return true;
+}
+
+bool Graph::addVertex(int id, double longitude, double latitude) {
+    if (!this->_coordinate_mode) {
+        return false;
+    }
+
+    if (findVertex(id) != nullptr) {
+        return false;
+    }
+
+    vertexSet.push_back(new LongLatVertex(id, longitude, latitude));
     return true;
 }
 

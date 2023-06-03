@@ -13,14 +13,21 @@ private:
     Graph _graph;
 
     /**
-     * @brief Path to input file
+     * @brief Path to input file (if Real World Graph the edge.csv)
      */
-    static const std::string INPUT_FILE; //! check later if the other info is needed
+    static const std::string INPUT_FILE;
+    
+    /**
+     * @brief Path to the node file with longitude and latitude info
+     */
+    static const std::string NODE_FILE;
 
     /**
      * @brief Reads data in input file and stores it in a graph
+     *
+     * TODO: change doc later
      */
-    void readData();
+    void readData(bool coordinateMode);
 
 public:
     /**

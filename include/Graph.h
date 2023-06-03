@@ -15,7 +15,17 @@ private:
      */
     std::vector<Vertex *> vertexSet;
 
+    /**
+     * @brief Check if the vertexes have coordinates or not
+     * (Used for Real World Graphs)
+     */
+    bool _coordinate_mode;
+
 public:
+
+    Graph() = default;
+    Graph(bool coordinateMode);
+
     /**
      * @brief Find a vertex in the graph with the given id, if it does not exists return nullptr
      * 
@@ -34,6 +44,17 @@ public:
      * @return false Vertex with that id already exists
      */
     bool addVertex(int id);
+
+    /**
+     * @brief Add a vertex to the graph, with latitude and longitude if _coordinate_mode is true
+     * 
+     * @param int Vertex id
+     * @param double Vertex longitude
+     * @param double Vertex latitude
+     * @return true Vertex was added
+     * @return false Vertex with that id already exists
+     */
+    bool addVertex(int id, double longitude, double latitude);
 
     /**
      * @brief Remove a vertex from the graph
