@@ -59,5 +59,5 @@ void Menu::init() {
     }
 
     std::cout << "Cost: " << cost << '\n';
-    std::cout << "Elapsed Time: " << duration.count() << " ms\n";
+    std::cout << "Elapsed Time: " << duration.count() << " s\n";
 }
