@@ -59,6 +59,8 @@ public:
 
     Vertex(int id);
 
+    virtual ~Vertex() = default;
+
     /**
      * @brief Get the vertex id
      *
@@ -176,6 +178,19 @@ public:
      * @return false Vertex does not exist
      */
     bool removeEdge(int destId);
+};
+
+class LongLatVertex: Vertex {
+private:
+    double _long;
+    double _lat;
+
+    double haversine(LongLatVertex &other);
+public:
+    LongLatVertex(int id, double longitude, double latitude);
+
+    double getLong();
+    double getLat();
 };
 
 /**

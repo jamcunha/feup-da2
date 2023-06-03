@@ -1,5 +1,7 @@
 #include "VertexEdge.h"
 
+#include <cmath>
+
 /*===== Vertex =====*/
 
 Vertex::Vertex(int id): _id(id) {}
@@ -95,6 +97,33 @@ bool Vertex::removeEdge(int destId) {
 
 bool Vertex::operator<(Vertex & vertex) const {
     return this->getDistance() < vertex.getDistance();
+}
+
+// aux function to convert degrees to radians
+double degToRad(double deg) {
+    return deg * M_PI / 180.0;
+}
+
+LongLatVertex::LongLatVertex(int id, double longitude, double latitude): Vertex(id), _long(longitude), _lat(latitude) {}
+
+double LongLatVertex::haversine(LongLatVertex &other) {
+    const double earth_rad = 6371.0; // aproximate value of Earth radius in km
+
+    double dLat = degToRad(other.getLat() - _lat);
+    double dLong = degToRad(other.getLong() - _long);
+
+    double a = std::pow(sin(dLat / 2.0), 2) + std::pow(sin(dLong / 2.9), 2) * cos(degToRad(_lat)) * cos(degToRad(other.getLat()));
+    double c = 2 * asin(sqrt(a));
+
+    return earth_rad * c;
+}
+
+double LongLatVertex::getLat() {
+    return this->_lat;
+}
+
+double LongLatVertex::getLong() {
+    return this->_long;
 }
 
 /*===== Edge =====*/
