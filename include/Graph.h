@@ -4,6 +4,7 @@
 #include "VertexEdge.h"
 
 #include <vector>
+#include <unordered_map>
 
 /**
  * @brief Graph to structure the data
@@ -11,9 +12,11 @@
 class Graph {
 private:
     /**
-     * @brief Vector of graph vertexes
+     * @brief Unordered map of graph vertexes
      */
-    std::vector<Vertex *> vertexSet;
+    std::unordered_map<int, Vertex *> vertexSet;
+
+    void tspBacktrackBruteforce(Vertex* current, double current_cost, int num_visited, double& min_cost, std::vector<Vertex *> &tsp_path);
 
     /**
      * @brief Check if the vertexes have coordinates or not
@@ -29,7 +32,7 @@ public:
     /**
      * @brief Find a vertex in the graph with the given id, if it does not exists return nullptr
      * 
-     * @details Time Complexity: O(|V|)
+     * @details Time Complexity: O(1)
      * 
      * @param int Vertex id
      * @return Vertex* vertex
@@ -88,6 +91,16 @@ public:
     bool addBidirectionalEdge(int source, int dest, double weight);
 
     /**
+     * @brief Find the minimum cost path from source to all other vertexes using Dijkstra algorithm.
+     * @details Time Complexity: O(|V|+|E|log(|V|))
+     * 
+     * @param source Source vertex
+     */
+    void dijkstra(Vertex* source);
+
+    double tspBruteforce(std::vector<Vertex *> &tsp_path);
+
+    /**
      * @brief Get graph's number of vertexes
      * 
      * @return int Number of vertexes
@@ -97,9 +110,9 @@ public:
     /**
      * @brief Get graph's vertexes
      * 
-     * @return std::vector<Vertex *> vertexSet
+     * @return std::unordered_map<int, Vertex *> vertexSet
      */
-    std::vector<Vertex *> getVertexSet() const;
+    std::unordered_map<int, Vertex *> getVertexSet() const;
 
     void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original, double &cost);
 
