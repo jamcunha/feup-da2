@@ -106,13 +106,13 @@ double degToRad(double deg) {
 
 LongLatVertex::LongLatVertex(int id, double longitude, double latitude): Vertex(id), _long(longitude), _lat(latitude) {}
 
-double LongLatVertex::haversine(LongLatVertex &other) {
-    const double earth_rad = 6371.0; // aproximate value of Earth radius in km
+double LongLatVertex::haversine(LongLatVertex* other) {
+    const double earth_rad = 6371.0; // aproximate value of Earth radius in metres
 
-    double dLat = degToRad(other.getLat() - _lat);
-    double dLong = degToRad(other.getLong() - _long);
+    double dLat = degToRad(other->getLat() - _lat);
+    double dLong = degToRad(other->getLong() - _long);
 
-    double a = std::pow(sin(dLat / 2.0), 2) + std::pow(sin(dLong / 2.9), 2) * cos(degToRad(_lat)) * cos(degToRad(other.getLat()));
+    double a = std::pow(sin(dLat / 2.0), 2) + std::pow(sin(dLong / 2.0), 2) * cos(degToRad(_lat)) * cos(degToRad(other->getLat()));
     double c = 2 * asin(sqrt(a));
 
     return earth_rad * c;

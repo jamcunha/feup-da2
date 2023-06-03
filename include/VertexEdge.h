@@ -185,12 +185,11 @@ private:
     double _long;
     double _lat;
 
-    double haversine(LongLatVertex &other);
 public:
     LongLatVertex(int id, double longitude, double latitude);
-
     double getLong();
     double getLat();
+    double haversine(LongLatVertex* other);
 };
 
 /**

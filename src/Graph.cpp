@@ -118,7 +118,11 @@ void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph &mst, Graph
     //std::priority_queue<Vertex *, std::vector<Vertex *>, decltype(cmp)> pq(cmp);
     MutablePriorityQueue<Vertex> pq;
     for (Vertex* v: vertexSet) {
-        mst.addVertex(v->getId());
+        LongLatVertex* llv = dynamic_cast<LongLatVertex*>(v);
+        if (llv == nullptr)
+            mst.addVertex(v->getId());
+        else
+            mst.addVertex(llv->getId(), llv->getLong(), llv->getLat());
         v->setVisited(false);
         v->setDistance(std::numeric_limits<double>::max());
         v->setPath(nullptr);
@@ -151,11 +155,11 @@ void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph &mst, Graph
         v->setVisited(false);
     }
     Vertex* v = mst.findVertex(0);
-    int prev;
+    Vertex* prev;
     preorderMST(v, result, original, cost, prev);
 }
 
-void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &original, double &cost, int &prev){
+void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &original, double &cost, Vertex* &prev){
     Vertex* v = original.findVertex(current->getId());
     result.push_back(v);
     current->setVisited(true);
@@ -163,12 +167,26 @@ void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &or
     for (Edge* e: current->getAdj()) {
         if (flag && !e->getDest()->isVisited()){
             cost += e->getWeight();
-            prev = e->getDest()->getId();
-
+            prev = e->getDest();
+            std::cout << cost<< '\n';
         }
         else if (!e->getDest()->isVisited()){
-            cost += original.findWeightEdge(prev, e->getDest()->getId());
-            prev = e->getDest()->getId();
+            double tmp = original.findWeightEdge(prev->getId(), e->getDest()->getId());
+            if (tmp == 0){
+                LongLatVertex* orig = dynamic_cast<LongLatVertex*>(prev);
+                LongLatVertex* dest = dynamic_cast<LongLatVertex*>(e->getDest());
+                if (orig!= nullptr && dest!= nullptr){
+                    double tmp = orig->haversine(dest);
+                    cost += tmp;
+                    std::cout << cost<< '\n';
+                }
+            }
+            else{
+                cost += tmp;
+                std::cout << cost<< '\n';
+
+            }
+            prev = e->getDest();
         }
         flag = false;
         Vertex* w = e->getDest();

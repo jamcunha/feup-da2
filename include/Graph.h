@@ -103,7 +103,7 @@ public:
 
     void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original, double &cost);
 
-    void preorderMST(Vertex *current, std::vector<Vertex *> &result, Graph &original, double &cost, int &prev);
+    void preorderMST(Vertex *current, std::vector<Vertex *> &result, Graph &original, double &cost, Vertex* &prev);
 
     double findWeightEdge(int source, int dest);
 };

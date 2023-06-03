@@ -8,13 +8,13 @@
 
 // To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/edges.csv'
 // To work with `Toy-Graphs` import '../data/Toy-Graphs/{file}.csv'
-const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph2/edges.csv";
+const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph1/edges.csv";
 
-const std::string Menu::NODE_FILE = "../data/Real-World-Graphs/graph2/node.csv";
+const std::string Menu::NODE_FILE = "../data/Real-World-Graphs/graph1/nodes.csv";
 
 void Menu::readData(bool coordinateMode) {
     // TODO: change after
-    if (!coordinateMode || true) {
+    if (!coordinateMode) {
         std::ifstream input(INPUT_FILE);
 
         if (!input.is_open()) {
@@ -127,7 +127,7 @@ void Menu::init() {
         std::vector<Vertex *>::iterator it2 = next(it, 1);
         for(auto e : (*it)->getAdj()){
             if (e->getDest()->getId() == (*it2)->getId()){
-                cost += e->getWeight();
+                cost1 += e->getWeight();
             }
         }
     }*/
@@ -141,4 +141,5 @@ void Menu::init() {
     }
     std::cout << "Cost: " << cost << "\n";
     std::cout << "Elapsed time: " << duration.count() << " ms\n";
+    std::cout << tsp_path.size() << "\n";
 }
