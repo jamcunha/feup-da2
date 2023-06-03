@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <limits>
 #include <queue>
-#include <iostream>
 
 Graph::Graph(bool coordinateMode): _coordinate_mode(coordinateMode) {}
 
@@ -248,23 +247,18 @@ void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &or
         if (flag && !e->getDest()->isVisited()){
             cost += e->getWeight();
             prev = e->getDest();
-            std::cout << cost<< '\n';
         }
         else if (!e->getDest()->isVisited()){
             double tmp = original.findWeightEdge(prev->getId(), e->getDest()->getId());
-            if (tmp == 0){
+            if (tmp == 0) {
                 LongLatVertex* orig = dynamic_cast<LongLatVertex*>(prev);
                 LongLatVertex* dest = dynamic_cast<LongLatVertex*>(e->getDest());
-                if (orig!= nullptr && dest!= nullptr){
+                if (orig!= nullptr && dest!= nullptr) {
                     double tmp = orig->haversine(dest);
                     cost += tmp;
-                    std::cout << cost<< '\n';
                 }
-            }
-            else{
+            } else {
                 cost += tmp;
-                std::cout << cost<< '\n';
-
             }
             prev = e->getDest();
         }

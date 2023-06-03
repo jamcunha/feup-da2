@@ -7,10 +7,12 @@
 #include <string>
 
 // To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/edges.csv'
+// To work with `Real-World-Graphs` import '../data/Extra_Fully_Connected_Graphs/edges_{x}.csv'
 // To work with `Toy-Graphs` import '../data/Toy-Graphs/{file}.csv'
-const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph1/edges.csv";
+const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph3/edges.csv";
 
-const std::string Menu::NODE_FILE = "../data/Real-World-Graphs/graph1/nodes.csv";
+// To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/nodes.csv'
+const std::string Menu::NODE_FILE = "../data/Real-World-Graphs/graph3/nodes.csv";
 
 void Menu::readData(bool coordinateMode) {
     // TODO: change after
@@ -108,7 +110,7 @@ Menu::Menu() {
     bool coordinateMode = true;
 
     this->_graph = new Graph(coordinateMode);
-    readData(true);
+    readData(coordinateMode);
 }
 
 void Menu::init() {
@@ -140,6 +142,5 @@ void Menu::init() {
         std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
     std::cout << "Cost: " << cost << "\n";
-    std::cout << "Elapsed time: " << duration.count() << " ms\n";
-    std::cout << tsp_path.size() << "\n";
+    std::cout << "Elapsed time: " << duration.count() << " s\n";
 }
