@@ -4,6 +4,7 @@
 #include "VertexEdge.h"
 
 #include <vector>
+#include <unordered_map>
 
 /**
  * @brief Graph to structure the data
@@ -11,9 +12,9 @@
 class Graph {
 private:
     /**
-     * @brief Vector of graph vertexes
+     * @brief Unordered map of graph vertexes
      */
-    std::vector<Vertex *> vertexSet;
+    std::unordered_map<int, Vertex *> vertexSet;
 
     void tspBacktrackBruteforce(Vertex* current, double current_cost, int num_visited, double& min_cost, std::vector<Vertex *> &tsp_path);
 
@@ -21,7 +22,7 @@ public:
     /**
      * @brief Find a vertex in the graph with the given id, if it does not exists return nullptr
      * 
-     * @details Time Complexity: O(|V|)
+     * @details Time Complexity: O(1)
      * 
      * @param int Vertex id
      * @return Vertex* vertex
@@ -88,9 +89,9 @@ public:
     /**
      * @brief Get graph's vertexes
      * 
-     * @return std::vector<Vertex *> vertexSet
+     * @return std::unordered_map<int, Vertex *> vertexSet
      */
-    std::vector<Vertex *> getVertexSet() const;
+    std::unordered_map<int, Vertex *> getVertexSet() const;
 };
 
 #endif // FEUP_DA2_GRAPH_H
