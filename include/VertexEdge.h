@@ -205,7 +205,7 @@ private:
     double _flow;
 
 public:
-    Edge(Vertex* origin, Vertex* dest, int weight);
+    Edge(Vertex* origin, Vertex* dest, double weight);
 
     /**
      * @brief Get the destination vertex

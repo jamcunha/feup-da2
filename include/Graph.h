@@ -15,6 +15,8 @@ private:
      */
     std::vector<Vertex *> vertexSet;
 
+    void tspBacktrackBruteforce(Vertex* current, double current_cost, int num_visited, double& min_cost, std::vector<Vertex *> &tsp_path);
+
 public:
     /**
      * @brief Find a vertex in the graph with the given id, if it does not exists return nullptr
@@ -65,6 +67,16 @@ public:
      * @return false Source or destination vertex does not exist
      */
     bool addBidirectionalEdge(int source, int dest, double weight);
+
+    /**
+     * @brief Find the minimum cost path from source to all other vertexes using Dijkstra algorithm.
+     * @details Time Complexity: O(|V|+|E|log(|V|))
+     * 
+     * @param source Source vertex
+     */
+    void dijkstra(Vertex* source);
+
+    double tspBruteforce(std::vector<Vertex *> &tsp_path);
 
     /**
      * @brief Get graph's number of vertexes
