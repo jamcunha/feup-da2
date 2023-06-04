@@ -15,7 +15,6 @@ const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph3/edges.csv
 const std::string Menu::NODE_FILE = "../data/Real-World-Graphs/graph3/nodes.csv";
 
 void Menu::readData(bool coordinateMode) {
-    // TODO: change after
     if (!coordinateMode) {
         std::ifstream input(INPUT_FILE);
 
@@ -106,7 +105,7 @@ void Menu::readData(bool coordinateMode) {
 }
 
 Menu::Menu() {
-    //! refactor later
+    //! refactor later (when implementing the menu)
     bool coordinateMode = true;
 
     this->_graph = new Graph(coordinateMode);
@@ -115,24 +114,10 @@ Menu::Menu() {
 
 void Menu::init() {
     std::vector<Vertex *> tsp_path;
-    double cost = 0;
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    // after this could be moved to graph class and have coordinateMode from that (or simply hard code depending on the option selected)
-    Graph mst = Graph(true);
-    Vertex* source = _graph.findVertex(0);
-    _graph.prim(source,tsp_path, mst, _graph, cost);
-    cost+=_graph.findWeightEdge((*(tsp_path.rbegin()))->getId(), source->getId());
-    tsp_path.push_back(source);
-    /*for (std::vector<Vertex *>::iterator it = tsp_path.begin(); it != tsp_path.end()-1; it++){
-        std::vector<Vertex *>::iterator it2 = next(it, 1);
-        for(auto e : (*it)->getAdj()){
-            if (e->getDest()->getId() == (*it2)->getId()){
-                cost1 += e->getWeight();
-            }
-        }
-    }*/
+    double cost = _graph.triangularApproximation(tsp_path);
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;

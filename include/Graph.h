@@ -114,11 +114,13 @@ public:
      */
     std::unordered_map<int, Vertex *> getVertexSet() const;
 
-    void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original, double &cost);
+    void prim(Vertex *source, std::vector<Vertex *> &result, Graph* mst, double &cost);
 
-    void preorderMST(Vertex *current, std::vector<Vertex *> &result, Graph &original, double &cost, Vertex* &prev);
+    void preorderMST(Vertex *current, std::vector<Vertex *> &result, double &cost, Vertex* &prev);
 
     double findWeightEdge(int source, int dest);
+
+    double triangularApproximation(std::vector<Vertex *> &tsp_path);
 };
 
 #endif // FEUP_DA2_GRAPH_H

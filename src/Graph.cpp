@@ -50,9 +50,11 @@ bool Graph::removeVertex(int id) {
     return true;
 }
 
+//? think we could remove this function since it's not that useful (used 3 times and 6 lines of code could do the same)
 double Graph::findWeightEdge(int source, int dest){
     auto v1 = findVertex(source);
     if (v1 == nullptr) {
+        //? could we just exit the program since this is not supposed to happen in any algorithm?
         return 0;
     }
     for (auto adj : v1->getAdj()){
@@ -190,18 +192,15 @@ std::unordered_map<int, Vertex *> Graph::getVertexSet() const {
     return this->vertexSet;
 }
 
-void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph &mst, Graph &original, double &cost){
-    /*auto cmp = [](Vertex* a, Vertex* b) {
-        return a->getDistance() > b->getDistance();
-    };*/
-    //std::priority_queue<Vertex *, std::vector<Vertex *>, decltype(cmp)> pq(cmp);
+void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph* mst, double &cost) {
     MutablePriorityQueue<Vertex> pq;
     for (auto v: vertexSet) {
         LongLatVertex* llv = dynamic_cast<LongLatVertex*>(v.second);
-        if (llv == nullptr)
-            mst.addVertex(v.second->getId());
-        else
-            mst.addVertex(llv->getId(), llv->getLong(), llv->getLat());
+        if (llv == nullptr) {
+            mst->addVertex(v.second->getId());
+        } else {
+            mst->addVertex(llv->getId(), llv->getLong(), llv->getLat());
+        }
         v.second->setVisited(false);
         v.second->setDistance(std::numeric_limits<double>::max());
         v.second->setPath(nullptr);
@@ -211,11 +210,13 @@ void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph &mst, Graph
     pq.insert(source);
     while (!pq.empty()) {
         Vertex* u = pq.extractMin();
-        if (u->isVisited())
+        if (u->isVisited()) {
             continue;
+        }
         u->setVisited(true);
-        if (u->getId()!=source->getId())
-            mst.addBidirectionalEdge(u->getPath()->getOrigin()->getId(), u->getId(), u->getPath()->getWeight());
+        if (u->getId() != source->getId()) {
+            mst->addBidirectionalEdge(u->getPath()->getOrigin()->getId(), u->getId(), u->getPath()->getWeight());
+        }
         for (Edge* e: u->getAdj()) {
             Vertex* v = e->getDest();
             double w = e->getWeight();
@@ -223,37 +224,38 @@ void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph &mst, Graph
                 double previous = v->getDistance();
                 v->setDistance(w);
                 v->setPath(e);
-                if (previous == std::numeric_limits<double>::max())
+                if (previous == std::numeric_limits<double>::max()) {
                     pq.insert(v);
-                else
+                } else {
                     pq.decreaseKey(v);
+                }
             }
         }
     }
     for (auto v: vertexSet) {
         v.second->setVisited(false);
     }
-    Vertex* v = mst.findVertex(0);
-    Vertex* prev;
-    preorderMST(v, result, original, cost, prev);
+    Vertex* v = mst->findVertex(0);
+    Vertex* prev = nullptr;
+    preorderMST(v, result, cost, prev);
 }
 
-void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &original, double &cost, Vertex* &prev){
-    Vertex* v = original.findVertex(current->getId());
+void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, double &cost, Vertex* &prev){
+    Vertex* v = findVertex(current->getId());
     result.push_back(v);
     current->setVisited(true);
     bool flag = true;
     for (Edge* e: current->getAdj()) {
-        if (flag && !e->getDest()->isVisited()){
+        if (flag && !e->getDest()->isVisited()) {
             cost += e->getWeight();
             prev = e->getDest();
         }
-        else if (!e->getDest()->isVisited()){
-            double tmp = original.findWeightEdge(prev->getId(), e->getDest()->getId());
+        else if (!e->getDest()->isVisited()) {
+            double tmp = findWeightEdge(prev->getId(), e->getDest()->getId());
             if (tmp == 0) {
                 LongLatVertex* orig = dynamic_cast<LongLatVertex*>(prev);
                 LongLatVertex* dest = dynamic_cast<LongLatVertex*>(e->getDest());
-                if (orig!= nullptr && dest!= nullptr) {
+                if (orig != nullptr && dest != nullptr) {
                     double tmp = orig->haversine(dest);
                     cost += tmp;
                 }
@@ -265,8 +267,20 @@ void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &or
         flag = false;
         Vertex* w = e->getDest();
         if (!w->isVisited()) {
-            preorderMST(w, result, original, cost, prev);
+            preorderMST(w, result, cost, prev);
         }
     }
 }
 
+double Graph::triangularApproximation(std::vector<Vertex *> &tsp_path) {
+    double cost = 0;
+    
+    Graph* mst = new Graph(_coordinate_mode);
+    Vertex* source = findVertex(0);
+    prim(source, tsp_path, mst, cost);
+    cost += findWeightEdge((*(tsp_path.begin()))->getId(), source->getId());
+    tsp_path.push_back(source);
+
+    delete mst;
+    return cost;
+}
