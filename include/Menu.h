@@ -2,6 +2,8 @@
 #define FEUP_DA2_MENU_H
 
 #include "Graph.h"
+#include "Utils.h"
+#include "VertexEdge.h"
 
 #include <string>
 
@@ -12,23 +14,58 @@ class Menu {
 private:
     Graph _graph;
 
-    /**
-     * @brief Path to input file
-     */
-    static const std::string INPUT_FILE; //! check later if the other info is needed
+    bool graphSelected;
+
+    bool algorithmSelected;
+
 
     /**
-     * @brief Reads data in input file and stores it in a graph
+     * @brief Read graph data from a file.
+     *
+     * @param INPUT_FILE The input file path.
      */
-    void readData();
+    void readData(const std::string& INPUT_FILE);
+
+    /**
+     * @brief Calculate the Traveling Salesman Problem (TSP) using the brute force algorithm.
+     */
+    void calculateBruteforceTSP();
+
+    /**
+     * @brief Calculate the Euclidean Traveling Salesman Problem (TSP) using the Triangular Approximation algorithm.
+     */
+    void calculateTriangularApproximation();
+
+    /**
+     * @brief Calculate the Euclidean Traveling Salesman Problem (TSP) using the Nearest Neighbor algorithm.
+     */
+    void calculateNearestNeighborTSP();
+
+    /**
+     * @brief Display the graph selection menu.
+     */
+    void graphSelectionMenu();
+
+    /**
+     * @brief Display the algorithm selection menu.
+     */
+    void algorithmSelectionMenu();
 
 public:
     /**
      * @brief Constructs a new Menu object
      */
     Menu();
-
+    
+    /**
+     * @brief Initialize the menu.
+     */
     void init();
 };
+
+/**
+ * @brief Clear the terminal screen.
+ */
+void clearTerminal();
 
 #endif // FEUP_DA2_MENU_H
