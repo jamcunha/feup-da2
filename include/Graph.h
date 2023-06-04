@@ -129,7 +129,11 @@ public:
     void tspNearestNeighbor(std::vector<Vertex*>& tsp_path);
 
 
+    double calculateDistance(Vertex *vertex1, Vertex *vertex2);
 
+    double calculateDeltaDistance(Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4);
+
+    void twoOptAlgorithm(std::vector<Vertex *> &tsp_path);
 };
 
 #endif // FEUP_DA2_GRAPH_H

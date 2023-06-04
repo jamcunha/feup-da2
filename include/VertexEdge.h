@@ -284,7 +284,7 @@ public:
     /**
      * @brief Set the distance.
      *
-     * @param distance The distance to set.
+     * @param distance The distance to set. 
      */
     void setDistance(double distance);
 
