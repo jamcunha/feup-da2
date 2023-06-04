@@ -226,7 +226,7 @@ void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &or
     for (Edge* e: current->getAdj()) {
         Vertex* w = e->getDest();
         if (!w->isVisited()) {
-            preorderMST(w, result, original);
+            preorderMST(w, result, original);  
         }
     }
 }
