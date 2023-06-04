@@ -8,22 +8,16 @@
 
 
 Vertex* Graph::findVertex(int id) const {
-    for (auto v: vertexSet) {
-        if (v->getId() == id) {
-            return v;
-        }
+    auto it = vertexSet.find(id);
+    if (it == vertexSet.end()) {
+        return nullptr;
     }
 
-    return nullptr;
+    return vertexSet.at(id);
 }
 
 bool Graph::addVertex(int id) {
-    if (findVertex(id) != nullptr) {
-        return false;
-    }
-
-    vertexSet.push_back(new Vertex(id));
-    return true;
+    return vertexSet.insert(std::make_pair(id, new Vertex(id))).second;
 }
 
 bool Graph::removeVertex(int id) {
@@ -38,13 +32,7 @@ bool Graph::removeVertex(int id) {
         v->removeEdge(w->getId());
     }
     
-    for (auto it = vertexSet.begin(); it != vertexSet.end(); it++) {
-        if ((*it)->getId() == id){
-            vertexSet.erase(it);
-            break;
-        }
-    }
-
+    vertexSet.erase(id);
     delete v;
     return true;
 }
@@ -82,9 +70,9 @@ void Graph::dijkstra(Vertex* source) {
     };
     std::priority_queue<Vertex *, std::vector<Vertex *>, decltype(cmp)> pq(cmp);
 
-    for (Vertex* v: vertexSet) {
-        v->setVisited(false);
-        v->setDistance(std::numeric_limits<double>::max());
+    for (auto v: vertexSet) {
+        v.second->setVisited(false);
+        v.second->setDistance(std::numeric_limits<double>::max());
     }
 
     source->setDistance(0);
@@ -154,9 +142,9 @@ void Graph::tspBacktrackBruteforce(Vertex* current, double current_cost, int num
 }
 
 double Graph::tspBruteforce(std::vector<Vertex *> &tsp_path) {
-    for (auto& v: vertexSet) {
-        v->setVisited(false);
-        v->setPath(nullptr);
+    for (auto v: vertexSet) {
+        v.second->setVisited(false);
+        v.second->setPath(nullptr);
     }
 
     double min_cost = std::numeric_limits<double>::max();
@@ -172,7 +160,7 @@ int Graph::getNumVertex() const {
     return this->vertexSet.size();
 }
 
-std::vector<Vertex *> Graph::getVertexSet() const {
+std::unordered_map<int, Vertex *> Graph::getVertexSet() const {
     return this->vertexSet;
 }
 
@@ -243,7 +231,7 @@ void Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
     std::size_t num_vertices = vertexSet.size();
     std::vector<bool> visited(num_vertices, false);
 
-    std::size_t start_idx = std::rand() % num_vertices;
+    std::size_t start_idx = 0;
     Vertex* current = vertexSet[start_idx];
     tsp_path.push_back(current);
     visited[start_idx] = true;
@@ -273,8 +261,44 @@ void Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
         Edge* final_edge = tsp_path.back()->getEdge(vertexSet[start_idx]);
         tsp_path.push_back(vertexSet[start_idx]);
     }
+    twoOptAlgorithm(tsp_path);
 }
 
+
+// Function to perform the 2-opt swap
+void perform2OptSwap(std::vector<Vertex*>& tsp_path, int i, int k) {
+    while (i < k) {
+        std::swap(tsp_path[i % tsp_path.size()], tsp_path[k % tsp_path.size()]);
+        i++;
+        k--;
+    }
+}
+
+// 2-opt algorithm
+void Graph::twoOptAlgorithm(std::vector<Vertex*>& tsp_path) {
+    int n = tsp_path.size();
+    bool improvement = true;
+
+    while (improvement) {
+        improvement = false;
+        for (int i = 0; i < n - 2; ++i) {
+            for (int k = i + 2; k < n; ++k) {
+                auto a = tsp_path[i]->getEdge(tsp_path[i + 1]);
+                auto b = tsp_path[k]->getEdge(tsp_path[(k + 1) % n]);
+                auto c = tsp_path[i]->getEdge(tsp_path[k]);
+                auto d = tsp_path[i + 1]->getEdge(tsp_path[(k + 1) % n]);
+                if (a == nullptr || b == nullptr || c == nullptr || d == nullptr)
+                    continue;
+                double currentDistance = a->getWeight() + b->getWeight();
+                double newDistance = c->getWeight() + d->getWeight();
+                if (newDistance < currentDistance) {
+                    perform2OptSwap(tsp_path, i + 1, k);
+                    improvement = true;
+                }
+            }
+        }
+    }
+}
 
 
 

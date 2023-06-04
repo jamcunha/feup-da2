@@ -6,10 +6,14 @@
 
 #include <string>
 #include <vector>
+<<<<<<< HEAD
 #include <limits>
 
 
 const double INF = std::numeric_limits<double>::infinity();
+=======
+#include <unordered_map>
+>>>>>>> origin
 
 /**
  * @brief Graph to structure the data
@@ -17,9 +21,9 @@ const double INF = std::numeric_limits<double>::infinity();
 class Graph {
 private:
     /**
-     * @brief Vector of graph vertexes
+     * @brief Unordered map of graph vertexes
      */
-    std::vector<Vertex *> vertexSet;
+    std::unordered_map<int, Vertex *> vertexSet;
 
     void tspBacktrackBruteforce(Vertex* current, double current_cost, int num_visited, double& min_cost, std::vector<Vertex *> &tsp_path);
 
@@ -41,7 +45,7 @@ public:
     /**
      * @brief Find a vertex in the graph with the given id, if it does not exists return nullptr
      * 
-     * @details Time Complexity: O(|V|)
+     * @details Time Complexity: O(1)
      * 
      * @param int Vertex id
      * @return Vertex* vertex
@@ -108,8 +112,9 @@ public:
     /**
      * @brief Get graph's vertexes
      * 
-     * @return std::vector<Vertex *> vertexSet
+     * @return std::unordered_map<int, Vertex *> vertexSet
      */
+<<<<<<< HEAD
     std::vector<Vertex *> getVertexSet() const;
 
     void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original);
@@ -129,7 +134,14 @@ public:
     void tspNearestNeighbor(std::vector<Vertex*>& tsp_path);
 
 
+    double calculateDistance(Vertex *vertex1, Vertex *vertex2);
 
+    double calculateDeltaDistance(Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4);
+
+    void twoOptAlgorithm(std::vector<Vertex *> &tsp_path);
+=======
+    std::unordered_map<int, Vertex *> getVertexSet() const;
+>>>>>>> origin
 };
 
 #endif // FEUP_DA2_GRAPH_H
