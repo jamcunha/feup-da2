@@ -53,38 +53,6 @@ void Menu::calculateBruteforceTSP() {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
 
-    std::cout << "TSP Path (Brute Force Algorithm):";
-    for (int i = 0; i < tsp_path.size(); i++) {
-        std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
-    }
-
-    std::cout << "Cost: " << cost << '\n';
-    std::cout << "Elapsed Time: " << duration.count() << " ms\n\n";   
-}
-
-void Menu::calculateTriangularApproximation() {
-    if (!graphSelected) {
-        std::cout << "No graph selected. Please select a graph first.\n\n";
-        return;
-    }
-
-    std::vector<Vertex *> tsp_path;
-
-    auto start = std::chrono::high_resolution_clock::now();
-
-    double cost = 0;
-    Graph mst = Graph();
-    Vertex* source = _graph.findVertex(0);
-    _graph.prim(source, tsp_path, mst, _graph);
-    tsp_path.push_back(source);
-    for (std::vector<Vertex *>::iterator it = tsp_path.begin(); it != tsp_path.end()-1; it++){
-        std::vector<Vertex *>::iterator it2 = next(it, 1);
-        for(auto e : (*it)->getAdj()){
-            if (e->getDest()->getId() == (*it2)->getId()){
-                cost += e->getWeight();
-            }
-        }
-    }
     std::cout << "Path: ";
     for (int i = 0; i < tsp_path.size(); i++) {
         std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
@@ -320,5 +288,6 @@ Menu::Menu() {
     graphSelected = false;
     algorithmSelected = false;
     
+    std::cout << "Elapsed Time: " << duration.count() << " s\n";
 }
 
