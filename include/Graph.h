@@ -2,18 +2,9 @@
 #define FEUP_DA2_GRAPH_H
 
 #include "VertexEdge.h"
-#include "MutablePriorityQueue.h"
 
-#include <string>
 #include <vector>
-<<<<<<< HEAD
-#include <limits>
-
-
-const double INF = std::numeric_limits<double>::infinity();
-=======
 #include <unordered_map>
->>>>>>> origin
 
 /**
  * @brief Graph to structure the data
@@ -26,20 +17,6 @@ private:
     std::unordered_map<int, Vertex *> vertexSet;
 
     void tspBacktrackBruteforce(Vertex* current, double current_cost, int num_visited, double& min_cost, std::vector<Vertex *> &tsp_path);
-
-    /**
-     * @brief 
-     * 
-     * @details 
-     * 
-     * @param int 
-     * @return 
-     */
-    Edge* getNearestVertex(Vertex* v);
-
-    double distance;
-
-    std::string order;
 
 public:
     /**
@@ -114,34 +91,7 @@ public:
      * 
      * @return std::unordered_map<int, Vertex *> vertexSet
      */
-<<<<<<< HEAD
-    std::vector<Vertex *> getVertexSet() const;
-
-    void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original);
-
-    void preorderMST(Vertex *current, std::vector<Vertex *> &result, Graph &original);
-
-    /**
-     * @brief Clears the graph by removing all vertices and edges.
-     */
-    void clearGraph();
-
-    /**
-    * @brief Calculate the TSP path using the Nearest Neighbor algorithm
-    * 
-    * @param tsp_path The vector to store the TSP path (output parameter)
-    */
-    void tspNearestNeighbor(std::vector<Vertex*>& tsp_path);
-
-
-    double calculateDistance(Vertex *vertex1, Vertex *vertex2);
-
-    double calculateDeltaDistance(Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4);
-
-    void twoOptAlgorithm(std::vector<Vertex *> &tsp_path);
-=======
     std::unordered_map<int, Vertex *> getVertexSet() const;
->>>>>>> origin
 };
 
 #endif // FEUP_DA2_GRAPH_H
