@@ -248,7 +248,7 @@ void Menu::graphSelectionMenu() {
                     case 3:
                         clearTerminal();
                         std::cout << "Selected Toy-Graph Tourism.\n\n";
-                        readData("../data/Toy-Graphs/tourism.csv");
+                        readData("../data/Extra/edges_300.csv");
                         graphSelected = true;
                         break;
                     case 4:

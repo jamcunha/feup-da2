@@ -268,7 +268,7 @@ void Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
     std::size_t num_vertices = vertexSet.size();
     std::vector<bool> visited(num_vertices, false);
 
-    std::size_t start_idx = std::rand() % num_vertices;
+    std::size_t start_idx = 0;
     Vertex* current = vertexSet[start_idx];
     tsp_path.push_back(current);
     visited[start_idx] = true;
@@ -298,8 +298,44 @@ void Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
         Edge* final_edge = tsp_path.back()->getEdge(vertexSet[start_idx]);
         tsp_path.push_back(vertexSet[start_idx]);
     }
+    twoOptAlgorithm(tsp_path);
 }
 
+
+// Function to perform the 2-opt swap
+void perform2OptSwap(std::vector<Vertex*>& tsp_path, int i, int k) {
+    while (i < k) {
+        std::swap(tsp_path[i % tsp_path.size()], tsp_path[k % tsp_path.size()]);
+        i++;
+        k--;
+    }
+}
+
+// 2-opt algorithm
+void Graph::twoOptAlgorithm(std::vector<Vertex*>& tsp_path) {
+    int n = tsp_path.size();
+    bool improvement = true;
+
+    while (improvement) {
+        improvement = false;
+        for (int i = 0; i < n - 2; ++i) {
+            for (int k = i + 2; k < n; ++k) {
+                auto a = tsp_path[i]->getEdge(tsp_path[i + 1]);
+                auto b = tsp_path[k]->getEdge(tsp_path[(k + 1) % n]);
+                auto c = tsp_path[i]->getEdge(tsp_path[k]);
+                auto d = tsp_path[i + 1]->getEdge(tsp_path[(k + 1) % n]);
+                if (a == nullptr || b == nullptr || c == nullptr || d == nullptr)
+                    continue;
+                double currentDistance = a->getWeight() + b->getWeight();
+                double newDistance = c->getWeight() + d->getWeight();
+                if (newDistance < currentDistance) {
+                    perform2OptSwap(tsp_path, i + 1, k);
+                    improvement = true;
+                }
+            }
+        }
+    }
+}
 
 
 
