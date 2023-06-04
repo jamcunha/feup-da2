@@ -47,7 +47,7 @@ void Menu::calculateBruteforceTSP() {
     }
 
     std::vector<Vertex *> tsp_path;
-
+ 
     auto start = std::chrono::high_resolution_clock::now();
     double cost = _graph.tspBruteforce(tsp_path);
     auto end = std::chrono::high_resolution_clock::now();
