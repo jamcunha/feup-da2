@@ -117,12 +117,6 @@ public:
     void preorderMST(Vertex *current, std::vector<Vertex *> &result, Graph &original);
 
     /**
-     * @brief Mark all vertices as unvisited
-     * 
-     */
-    void markAllUnvisited();
-
-    /**
      * @brief Clears the graph by removing all vertices and edges.
      */
     void clearGraph();

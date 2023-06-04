@@ -231,31 +231,6 @@ void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, Graph &or
     }
 }
 
-//=======================================4.3 -> NearestNeighbor=================================================
-
-void Graph::markAllUnvisited() {
-    for (auto v : vertexSet) {
-        v->setVisited(false);
-    }
-}
-
-Edge* Graph::getNearestVertex(Vertex* v) {
-    double distance = INF;
-    Edge* nearest_vertex_path = nullptr;
-
-    for (auto e : v->getAdj()) {
-        if (e->getDest()->isVisited())
-            continue;
-
-        if (e->getDistance() < distance) {
-            distance = e->getDistance();
-            nearest_vertex_path = e;
-        }
-    }
-
-    return nearest_vertex_path;
-}
-
 void Graph::clearGraph() {
     for (auto& vertex : vertexSet) {
         delete vertex;
