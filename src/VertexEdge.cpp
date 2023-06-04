@@ -93,19 +93,6 @@ bool Vertex::removeEdge(int destId) {
     return edgeRemoved;
 }
 
-bool Vertex::operator<(Vertex & vertex) const {
-    return this->getDistance() < vertex.getDistance();
-}
-
-Edge* Vertex::getEdge(Vertex* dest) const {
-    for (Edge* edge : _adj) {
-        if (edge->getDest() == dest) {
-            return edge;
-        }
-    }
-    return nullptr;
-}
-
 /*===== Edge =====*/
 
 Edge::Edge(Vertex* origin, Vertex* dest, double weight)
@@ -137,12 +124,4 @@ void Edge::setReverse(Edge* reverse) {
 
 void Edge::setFlow(double flow) {
     this->_flow = flow;
-}
-
-double Edge::getDistance() const {
-    return this->_distance;
-}
-
-void Edge::setDistance(double distance) {
-    this->_distance = distance;
 }
