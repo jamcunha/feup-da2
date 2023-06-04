@@ -6,11 +6,14 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
+<<<<<<< HEAD
 #include <limits>
 
 
 const double INF = std::numeric_limits<double>::infinity();
+=======
+#include <unordered_map>
+>>>>>>> origin
 
 /**
  * @brief Graph to structure the data
@@ -111,7 +114,8 @@ public:
      * 
      * @return std::unordered_map<int, Vertex *> vertexSet
      */
-    std::unordered_map<int, Vertex *> getVertexSet() const;
+<<<<<<< HEAD
+    std::vector<Vertex *> getVertexSet() const;
 
     void prim(Vertex *source, std::vector<Vertex *> &result, Graph &mst, Graph &original);
 
@@ -135,6 +139,9 @@ public:
     double calculateDeltaDistance(Vertex *vertex1, Vertex *vertex2, Vertex *vertex3, Vertex *vertex4);
 
     void twoOptAlgorithm(std::vector<Vertex *> &tsp_path);
+=======
+    std::unordered_map<int, Vertex *> getVertexSet() const;
+>>>>>>> origin
 };
 
 #endif // FEUP_DA2_GRAPH_H
