@@ -22,14 +22,14 @@ private:
     std::string INPUT_FILE;
     
     /**
-     * @brief Path to the node file with longitude and latitude info
+     * @brief Path to the node file with longitude and latitude info (used in Real World Graphs nodes.csv)
      */
     std::string NODE_FILE;
 
     /**
      * @brief Reads data in input file and stores it in a graph
      *
-     * TODO: change doc later
+     * @param coordinateMode True if the graph is a Real World Graph (needs coordinates to calculate the distance between vertexes)
      */
     void readData(bool coordinateMode);
 

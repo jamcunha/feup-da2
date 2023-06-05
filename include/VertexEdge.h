@@ -51,8 +51,18 @@ private:
      double _distance = 0;
 
 public:
+    /**
+     * @brief Index of the vertex in the mutable priority queue
+     */
     int queueIndex = 0;
 
+    /**
+     * @brief Compare two vertexes by their distance
+     * 
+     * @param vertex The vertex to compare to
+     * @return true Smaller distance
+     * @return false Bigger distance
+     */
     bool operator<(Vertex & vertex) const;
 
     Vertex(int id);
@@ -188,13 +198,39 @@ public:
 
 class LongLatVertex: public Vertex {
 private:
+    /**
+     * @brief Longitude of the vertex
+     */
     double _long;
+
+    /**
+     * @brief Latitude of the vertex
+     */
     double _lat;
 
 public:
     LongLatVertex(int id, double longitude, double latitude);
+
+    /**
+     * @brief Get the Longitude of the vertex
+     * 
+     * @return double Longitude
+     */
     double getLong();
+
+    /**
+     * @brief Get the Latitude of the vertex
+     * 
+     * @return double Latitude
+     */
     double getLat();
+    
+    /**
+     * @brief Calculate the distance between two vertexes using the Haversine formula
+     * 
+     * @param other The other vertex
+     * @return double The distance between the two vertexes
+     */
     double haversine(LongLatVertex* other);
 };
 

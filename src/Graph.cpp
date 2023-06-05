@@ -192,7 +192,8 @@ std::unordered_map<int, Vertex *> Graph::getVertexSet() const {
     return this->vertexSet;
 }
 
-void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph* mst, double &cost) {
+void Graph::prim(Vertex* source, std::vector<Vertex*> &result, double &cost) {
+    Graph* mst = new Graph(_coordinate_mode);
     MutablePriorityQueue<Vertex> pq;
     for (auto v: vertexSet) {
         LongLatVertex* llv = dynamic_cast<LongLatVertex*>(v.second);
@@ -238,6 +239,7 @@ void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph* mst, doubl
     Vertex* v = mst->findVertex(0);
     Vertex* prev = nullptr;
     preorderMST(v, result, cost, prev);
+    delete mst;
 }
 
 void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, double &cost, Vertex* &prev){
@@ -275,13 +277,11 @@ void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, double &c
 double Graph::triangularApproximation(std::vector<Vertex *> &tsp_path) {
     double cost = 0;
     
-    Graph* mst = new Graph(_coordinate_mode);
     Vertex* source = findVertex(0);
-    prim(source, tsp_path, mst, cost);
+    prim(source, tsp_path, cost);
     cost += findWeightEdge((*(tsp_path.rbegin()))->getId(), source->getId());
     tsp_path.push_back(source);
 
-    delete mst;
     return cost;
 }
 
