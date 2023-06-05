@@ -278,7 +278,7 @@ double Graph::triangularApproximation(std::vector<Vertex *> &tsp_path) {
     Graph* mst = new Graph(_coordinate_mode);
     Vertex* source = findVertex(0);
     prim(source, tsp_path, mst, cost);
-    cost += findWeightEdge((*(tsp_path.begin()))->getId(), source->getId());
+    cost += findWeightEdge((*(tsp_path.rbegin()))->getId(), source->getId());
     tsp_path.push_back(source);
 
     delete mst;

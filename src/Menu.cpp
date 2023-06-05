@@ -9,10 +9,10 @@
 // To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/edges.csv'
 // To work with `Real-World-Graphs` import '../data/Extra_Fully_Connected_Graphs/edges_{x}.csv'
 // To work with `Toy-Graphs` import '../data/Toy-Graphs/{file}.csv'
-const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph3/edges.csv";
+const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph1/edges.csv";
 
 // To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/nodes.csv'
-const std::string Menu::NODE_FILE = "../data/Real-World-Graphs/graph3/nodes.csv";
+const std::string Menu::NODE_FILE = "../data/Real-World-Graphs/graph1/nodes.csv";
 
 void Menu::readData(bool coordinateMode) {
     if (!coordinateMode) {
