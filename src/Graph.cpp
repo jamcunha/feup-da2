@@ -285,7 +285,7 @@ double Graph::triangularApproximation(std::vector<Vertex *> &tsp_path) {
     return cost;
 }
 
-double Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
+double Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path, unsigned int two_opt_iterations) {
     tsp_path.clear();
     std::size_t num_vertices = vertexSet.size();
     std::vector<bool> visited(num_vertices, false);
@@ -320,7 +320,7 @@ double Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
         Edge* final_edge = tsp_path.back()->getEdge(vertexSet[start_idx]->getId());
         tsp_path.push_back(vertexSet[start_idx]);
     }
-    twoOptAlgorithm(tsp_path);
+    twoOptAlgorithm(tsp_path, two_opt_iterations);
 
     double cost = 0;
     for (int i = 0; i < tsp_path.size() - 1; i++) {
@@ -330,7 +330,6 @@ double Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
 
     return cost;
 }
-
 
 // Function to perform the 2-opt swap
 void perform2OptSwap(std::vector<Vertex*>& tsp_path, int i, int k) {
@@ -342,11 +341,13 @@ void perform2OptSwap(std::vector<Vertex*>& tsp_path, int i, int k) {
 }
 
 // 2-opt algorithm
-void Graph::twoOptAlgorithm(std::vector<Vertex*>& tsp_path) {
+void Graph::twoOptAlgorithm(std::vector<Vertex*>& tsp_path, unsigned int two_opt_iterations) {
     int n = tsp_path.size();
+    unsigned int iterations = 0;
     bool improvement = true;
 
-    while (improvement) {
+    while (improvement && iterations < two_opt_iterations) {
+        iterations++;
         improvement = false;
         for (int i = 0; i < n - 2; ++i) {
             for (int k = i + 2; k < n; ++k) {

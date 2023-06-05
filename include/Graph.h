@@ -126,11 +126,12 @@ public:
     * @brief Calculate the TSP path using the Nearest Neighbor algorithm
     * 
     * @param tsp_path The vector to store the TSP path (output parameter)
+    * @param two_opt_iterations Number of iterations of the 2-opt algorithm
     * @return double The cost of the TSP path
     */
-    double tspNearestNeighbor(std::vector<Vertex*>& tsp_path);
+    double tspNearestNeighbor(std::vector<Vertex*>& tsp_path, unsigned int two_opt_iterations);
 
-    void twoOptAlgorithm(std::vector<Vertex *> &tsp_path);
+    void twoOptAlgorithm(std::vector<Vertex *> &tsp_path, unsigned int two_opt_iterations);
 };
 
 #endif // FEUP_DA2_GRAPH_H

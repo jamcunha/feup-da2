@@ -159,11 +159,15 @@ void Menu::calculateNearestNeighborTSP() {
         return;
     }
 
+    unsigned int iterations;
+    std::cout << "Iterations for the 2opt algorithm (0 to not run 2opt algorithm, more iterations -> more precise): ";
+    std::cin >> iterations;
+
     std::vector<Vertex*> tsp_path;
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    double cost = _graph.tspNearestNeighbor(tsp_path);
+    double cost = _graph.tspNearestNeighbor(tsp_path, iterations);
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
