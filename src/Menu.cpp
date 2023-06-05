@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "Utils.h"
 
 #include <chrono>
 #include <fstream>
@@ -9,10 +10,10 @@
 // To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/edges.csv'
 // To work with `Real-World-Graphs` import '../data/Extra_Fully_Connected_Graphs/edges_{x}.csv'
 // To work with `Toy-Graphs` import '../data/Toy-Graphs/{file}.csv'
-const std::string Menu::INPUT_FILE = "../data/Real-World-Graphs/graph1/edges.csv";
+// std::string Menu::INPUT_FILE;
 
 // To work with `Real-World-Graphs` import '../data/Real-World-Graphs/graph{x}/nodes.csv'
-const std::string Menu::NODE_FILE = "../data/Real-World-Graphs/graph1/nodes.csv";
+// std::string Menu::NODE_FILE;
 
 void Menu::readData(bool coordinateMode) {
     if (!coordinateMode) {
@@ -51,7 +52,7 @@ void Menu::readData(bool coordinateMode) {
         }
 
         input.close();
-    } else { // TODO: to be tested
+    } else {
         std::ifstream node(NODE_FILE);
         std::ifstream edge(INPUT_FILE);
 
@@ -104,15 +105,34 @@ void Menu::readData(bool coordinateMode) {
     }
 }
 
-Menu::Menu() {
-    //! refactor later (when implementing the menu)
-    bool coordinateMode = true;
+void Menu::calculateBruteforceTSP() {
+    if (!_graph_selected) {
+        std::cout << "No graph selected. Please select a graph first.\n\n";
+        return;
+    }
 
-    this->_graph = new Graph(coordinateMode);
-    readData(coordinateMode);
+    std::vector<Vertex *> tsp_path;
+
+    auto start = std::chrono::high_resolution_clock::now();
+    double cost = _graph.tspBruteforce(tsp_path);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    std::cout << "TSP Path (Brute Force Algorithm):";
+    for (int i = 0; i < tsp_path.size(); i++) {
+        std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
+    }
+
+    std::cout << "Cost: " << cost << '\n';
+    std::cout << "Elapsed Time: " << duration.count() << " s\n\n";   
 }
 
-void Menu::init() {
+void Menu::calculateTriangularApproximation() {
+    if (!_graph_selected) {
+        std::cout << "No graph selected. Please select a graph first.\n\n";
+        return;
+    }
+
     std::vector<Vertex *> tsp_path;
 
     auto start = std::chrono::high_resolution_clock::now();
@@ -126,6 +146,259 @@ void Menu::init() {
     for (int i = 0; i < tsp_path.size(); i++) {
         std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
+
     std::cout << "Cost: " << cost << "\n";
-    std::cout << "Elapsed time: " << duration.count() << " s\n";
+    std::cout << "Elapsed Time: " << duration.count() << " s\n\n";
+}
+
+
+
+void Menu::calculateNearestNeighborTSP() {
+    if (!_graph_selected) {
+        std::cout << "No graph selected. Please select a graph first.\n\n";
+        return;
+    }
+
+    std::vector<Vertex*> tsp_path;
+    double cost = 0.0;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    _graph.tspNearestNeighbor(tsp_path);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    std::cout << "TSP Path (Nearest Neighbor): ";
+    for (int i = 0; i < tsp_path.size(); i++) {
+        std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
+    }
+
+    for (int i = 0; i < tsp_path.size() - 1; i++) {
+        Edge* edge = tsp_path[i]->getEdge(tsp_path[i + 1]->getId());
+        cost += edge->getWeight();
+    }
+
+    std::cout << "Cost: " << cost << '\n';
+    std::cout << "Elapsed Time: " << duration.count() << " s\n\n";
+}
+
+
+
+void Menu::init() {
+    bool exit = false;
+
+    while (!exit) {
+        utils::clearScreen();
+        std::cout << "Menu Options:\n";
+        std::cout << "1. Select Graph\n";
+        std::cout << "2. Run Algorithm\n";
+        std::cout << "3. Exit\n";
+        std::cout << "Enter your choice: ";
+
+        int choice;
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                utils::clearScreen();
+                graphSelectionMenu();
+                break;
+            case 2:
+                utils::clearScreen();
+                algorithmSelectionMenu();
+                break;
+            case 3:
+                utils::clearScreen();
+                exit = true;
+                break;
+            default:
+                utils::clearScreen();
+                std::cout << "Invalid choice. Please try again.\n\n";
+                break;
+        }
+    }
+}
+
+void Menu::graphSelectionMenu() {
+    _graph_selected = false;
+
+    while (!_graph_selected) {
+        std::cout << "Graph Selection:\n";
+        std::cout << "1. Real-World-Graphs\n";
+        std::cout << "2. Toy-Graphs\n";
+        std::cout << "3. Back\n";
+        std::cout << "Enter your choice: ";
+
+        int choice;
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                utils::clearScreen();
+                std::cout << "Real-World-Graphs Selection:\n";
+                std::cout << "1. Graph 1\n";
+                std::cout << "2. Graph 2\n";
+                std::cout << "3. Graph 3\n";
+                std::cout << "4. Back\n";
+                std::cout << "Enter your choice: ";
+
+                int rwgChoice;
+                std::cin >> rwgChoice;
+
+                switch (rwgChoice) {
+                    case 1:
+                        utils::clearScreen();
+                        std::cout << "Selected Real-World-Graph 1.\n\n";
+
+                        _graph = Graph(true);
+
+                        this->INPUT_FILE = "../data/Real-World-Graphs/graph1/edges.csv";
+                        this->NODE_FILE = "../data/Real-World-Graphs/graph1/nodes.csv";
+                        readData(true);
+                        _graph_selected = true;
+                        break;
+                    case 2:
+                        utils::clearScreen();
+                        std::cout << "Selected Real-World-Graph 2.\n\n";
+
+                        _graph = Graph(true);
+
+                        this->INPUT_FILE = "../data/Real-World-Graphs/graph2/edges.csv";
+                        this->NODE_FILE = "../data/Real-World-Graphs/graph2/nodes.csv";
+                        readData(true);
+                        _graph_selected = true;
+                        break;
+                    case 3:
+                        utils::clearScreen();
+                        std::cout << "Selected Real-World-Graph 3.\n\n";
+
+                        _graph = Graph(true);
+
+                        this->INPUT_FILE = "../data/Real-World-Graphs/graph3/edges.csv";
+                        this->NODE_FILE = "../data/Real-World-Graphs/graph3/nodes.csv";
+                        readData(true);
+                        _graph_selected = true;
+                        break;
+                    case 4:
+                        utils::clearScreen();
+                        std::cout << "Going back to Graph Selection Menu.\n\n";
+                        break;
+                    default:
+                        utils::clearScreen();
+                        std::cout << "Invalid choice. Please try again.\n\n";
+                        break;
+                }
+                break;
+            case 2:
+                utils::clearScreen();
+                std::cout << "Toy-Graphs Selection:\n";
+                std::cout << "1. Shipping\n";
+                std::cout << "2. Stadiums\n";
+                std::cout << "3. Tourism\n";
+                std::cout << "4. Back\n";
+                std::cout << "Enter your choice: ";
+
+                int tgChoice;
+                std::cin >> tgChoice;
+
+                switch (tgChoice) {
+                    case 1:
+                        utils::clearScreen();
+                        std::cout << "Selected Toy-Graph Shipping.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Toy-Graphs/shipping.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 2:
+                        utils::clearScreen();
+                        std::cout << "Selected Toy-Graph Stadiums.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Toy-Graphs/stadiums.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 3:
+                        utils::clearScreen();
+                        std::cout << "Selected Toy-Graph Tourism.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Toy-Graphs/tourism.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 4:
+                        utils::clearScreen();
+                        std::cout << "Going back to Graph Selection Menu.\n\n";
+                        break;
+                    default:
+                        utils::clearScreen();
+                        std::cout << "Invalid choice. Please try again.\n\n";
+                        break;
+                }
+                break;
+            case 3:
+                utils::clearScreen();
+                return;
+            default:
+                utils::clearScreen();
+                std::cout << "Invalid choice. Please try again.\n\n";
+                break;
+        }
+    }
+}
+
+void Menu::algorithmSelectionMenu() {
+    _algorithm_selected = false;
+
+    while (!_algorithm_selected) {
+        std::cout << "Algorithm Selection:\n";
+        std::cout << "1. Calculate TSP (Brute Force)\n";
+        std::cout << "2. Calculate TSP (Triangular Approximation Heuristic) \n";
+        std::cout << "3. Calculate TSP (Nearest Neighbor)\n";
+        std::cout << "4. Back\n";
+        std::cout << "Enter your choice: ";
+
+        int choice;
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                utils::clearScreen();
+                std::cout << "Selected TSP (Brute Force) Algorithm.\n\n";
+                calculateBruteforceTSP();
+                _algorithm_selected = true;
+                break;
+            case 2:
+                utils::clearScreen();
+                std::cout << "Selected TSP (Triangular Approximation Heuristic).\n\n";
+                calculateTriangularApproximation();
+                _algorithm_selected = true;
+                break;
+            case 3:
+                utils::clearScreen();
+                std::cout << "Selected TSP (Nearest Neighbor) Algorithm.\n\n";
+                calculateNearestNeighborTSP();
+                _algorithm_selected = true;
+                break;
+            case 4:
+                utils::clearScreen();
+                return;
+            default:
+                utils::clearScreen();
+                std::cout << "Invalid choice. Please try again.\n\n";
+                break;
+        }
+    }
+}
+
+Menu::Menu() {
+    _graph_selected = false;
+    _algorithm_selected = false;
 }

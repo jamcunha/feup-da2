@@ -121,6 +121,15 @@ public:
     double findWeightEdge(int source, int dest);
 
     double triangularApproximation(std::vector<Vertex *> &tsp_path);
+
+    /**
+    * @brief Calculate the TSP path using the Nearest Neighbor algorithm
+    * 
+    * @param tsp_path The vector to store the TSP path (output parameter)
+    */
+    void tspNearestNeighbor(std::vector<Vertex*>& tsp_path);
+
+    void twoOptAlgorithm(std::vector<Vertex *> &tsp_path);
 };
 
 #endif // FEUP_DA2_GRAPH_H

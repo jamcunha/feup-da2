@@ -284,3 +284,79 @@ double Graph::triangularApproximation(std::vector<Vertex *> &tsp_path) {
     delete mst;
     return cost;
 }
+
+// TODO: return cost
+void Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
+    tsp_path.clear();
+    std::size_t num_vertices = vertexSet.size();
+    std::vector<bool> visited(num_vertices, false);
+
+    std::size_t start_idx = 0;
+    Vertex* current = vertexSet[start_idx];
+    tsp_path.push_back(current);
+    visited[start_idx] = true;
+
+    while (tsp_path.size() < num_vertices) {
+        double min_edge_weight = std::numeric_limits<double>::infinity();
+        Vertex* next_vertex = nullptr;
+
+        for (Edge* edge : current->getAdj()) {
+            Vertex* neighbor_vertex = edge->getDest();
+            if (!visited[neighbor_vertex->getId()] && edge->getWeight() < min_edge_weight) {
+                min_edge_weight = edge->getWeight();
+                next_vertex = neighbor_vertex;
+            }
+        }
+
+        if (next_vertex == nullptr) {
+            break;
+        }
+
+        tsp_path.push_back(next_vertex);
+        visited[next_vertex->getId()] = true;
+        current = next_vertex;
+    }
+
+    if (tsp_path.size() == num_vertices) {
+        Edge* final_edge = tsp_path.back()->getEdge(vertexSet[start_idx]->getId());
+        tsp_path.push_back(vertexSet[start_idx]);
+    }
+    twoOptAlgorithm(tsp_path);
+}
+
+
+// Function to perform the 2-opt swap
+void perform2OptSwap(std::vector<Vertex*>& tsp_path, int i, int k) {
+    while (i < k) {
+        std::swap(tsp_path[i % tsp_path.size()], tsp_path[k % tsp_path.size()]);
+        i++;
+        k--;
+    }
+}
+
+// 2-opt algorithm
+void Graph::twoOptAlgorithm(std::vector<Vertex*>& tsp_path) {
+    int n = tsp_path.size();
+    bool improvement = true;
+
+    while (improvement) {
+        improvement = false;
+        for (int i = 0; i < n - 2; ++i) {
+            for (int k = i + 2; k < n; ++k) {
+                auto a = tsp_path[i]->getEdge(tsp_path[i + 1]->getId());
+                auto b = tsp_path[k]->getEdge(tsp_path[(k + 1) % n]->getId());
+                auto c = tsp_path[i]->getEdge(tsp_path[k]->getId());
+                auto d = tsp_path[i + 1]->getEdge(tsp_path[(k + 1) % n]->getId());
+                if (a == nullptr || b == nullptr || c == nullptr || d == nullptr) {
+                    continue;
+                }
+                double currentDistance = a->getWeight() + b->getWeight();
+                double newDistance = c->getWeight() + d->getWeight();
+                if (newDistance < currentDistance) {
+                    perform2OptSwap(tsp_path, i + 1, k);
+                    improvement = true;
+                }
+            }
+        }
+    }
+}

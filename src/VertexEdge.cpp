@@ -14,6 +14,15 @@ std::vector<Edge *> Vertex::getAdj() const {
     return this->_adj;
 }
 
+Edge* Vertex::getEdge(int dest_id) const {
+    for (Edge* edge : _adj) {
+        if (edge->getDest()->getId() == dest_id) {
+            return edge;
+        }
+    }
+    return nullptr;
+}
+
 bool Vertex::isVisited() const {
     return this->_visited;
 }

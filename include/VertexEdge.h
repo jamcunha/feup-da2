@@ -3,8 +3,6 @@
 
 #include <vector>
 
-// TODO: change documentation
-
 class Edge;
 
 /**
@@ -74,6 +72,14 @@ public:
      * @return std::vector<Edge*> adjacencyList
      */
     std::vector<Edge *> getAdj() const;
+
+    /**
+     * @brief Gets the edge connecting this vertex to the specified destination vertex.
+     * 
+     * @param dest_id The destination vertex id.
+     * @return The edge connecting this vertex to the destination vertex, or nullptr if not found.
+     */
+    Edge* getEdge(int dest_id) const;
 
     /**
      * @brief If the vertex was visited
