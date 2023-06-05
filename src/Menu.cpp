@@ -193,7 +193,7 @@ void Menu::init() {
         std::cout << "Menu Options:\n";
         std::cout << "1. Select Graph\n";
         std::cout << "2. Run Algorithm\n";
-        std::cout << "3. Exit\n";
+        std::cout << "3. Exit\n\n";
         std::cout << "Enter your choice: ";
 
         int choice;
@@ -227,7 +227,8 @@ void Menu::graphSelectionMenu() {
         std::cout << "Graph Selection:\n";
         std::cout << "1. Real-World-Graphs\n";
         std::cout << "2. Toy-Graphs\n";
-        std::cout << "3. Back\n";
+        std::cout << "3. Extra-Graphs\n";
+        std::cout << "4. Back\n";
         std::cout << "Enter your choice: ";
 
         int choice;
@@ -344,6 +345,158 @@ void Menu::graphSelectionMenu() {
                 }
                 break;
             case 3:
+            utils::clearScreen();
+                std::cout << "Toy-Graphs Selection:\n";
+                std::cout << "1. 25 Edges\n";
+                std::cout << "2. 50 Edges\n";
+                std::cout << "3. 75 Edges\n";
+                std::cout << "4. 100 Edges\n";
+                std::cout << "5. 200 Edges\n";
+                std::cout << "6. 300 Edges\n";
+                std::cout << "7. 400 Edges\n";
+                std::cout << "8. 500 Edges\n";
+                std::cout << "9. 600 Edges\n";
+                std::cout << "10. 700 Edges\n";
+                std::cout << "11. 800 Edges\n";
+                std::cout << "12. 900 Edges\n";
+                std::cout << "13. Back\n";
+                std::cout << "Enter your choice: ";
+
+                int egChoice;
+                std::cin >> egChoice;
+
+                switch (egChoice) {
+                    case 1:
+                        utils::clearScreen();
+                        std::cout << "Selected 25 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_25.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 2:
+                        utils::clearScreen();
+                        std::cout << "Selected 50 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_50.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 3:
+                        utils::clearScreen();
+                        std::cout << "Selected 75 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_75.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 4:
+                        utils::clearScreen();
+                        std::cout << "Selected 100 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_100.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 5:
+                        utils::clearScreen();
+                        std::cout << "Selected 200 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_200.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 6:
+                        utils::clearScreen();
+                        std::cout << "Selected 300 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_300.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 7:
+                        utils::clearScreen();
+                        std::cout << "Selected 400 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_400.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 8:
+                        utils::clearScreen();
+                        std::cout << "Selected 500 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_500.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 9:
+                        utils::clearScreen();
+                        std::cout << "Selected 600 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_600.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 10:
+                        utils::clearScreen();
+                        std::cout << "Selected 700 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_700.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 11:
+                        utils::clearScreen();
+                        std::cout << "Selected 800 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_800.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 12:
+                        utils::clearScreen();
+                        std::cout << "Selected 900 Edges Extra Graph.\n\n";
+
+                        _graph = Graph(false);
+
+                        this->INPUT_FILE = "../data/Extra_Fully_Connected_Graphs/edges_900.csv";
+                        readData(false);
+                        _graph_selected = true;
+                        break;
+                    case 13:
+                        utils::clearScreen();
+                        std::cout << "Going back to Graph Selection Menu.\n\n";
+                        break;
+                    default:
+                        utils::clearScreen();
+                        std::cout << "Invalid choice. Please try again.\n\n";
+                        break;
+                }
+                break;
+            case 4:
                 utils::clearScreen();
                 return;
             default:
@@ -374,21 +527,23 @@ void Menu::algorithmSelectionMenu() {
                 std::cout << "Selected TSP (Brute Force) Algorithm.\n\n";
                 calculateBruteforceTSP();
                 _algorithm_selected = true;
+                utils::waitEnter();
                 break;
             case 2:
                 utils::clearScreen();
                 std::cout << "Selected TSP (Triangular Approximation Heuristic).\n\n";
                 calculateTriangularApproximation();
                 _algorithm_selected = true;
+                utils::waitEnter();
                 break;
             case 3:
                 utils::clearScreen();
                 std::cout << "Selected TSP (Nearest Neighbor) Algorithm.\n\n";
                 calculateNearestNeighborTSP();
                 _algorithm_selected = true;
+                utils::waitEnter();
                 break;
             case 4:
-                utils::clearScreen();
                 return;
             default:
                 utils::clearScreen();
