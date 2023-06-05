@@ -160,11 +160,10 @@ void Menu::calculateNearestNeighborTSP() {
     }
 
     std::vector<Vertex*> tsp_path;
-    double cost = 0.0;
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    _graph.tspNearestNeighbor(tsp_path);
+    double cost = _graph.tspNearestNeighbor(tsp_path);
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
@@ -174,11 +173,6 @@ void Menu::calculateNearestNeighborTSP() {
         std::cout << tsp_path[i]->getId() << (i == tsp_path.size() - 1 ? "\n" : " -> ");
     }
 
-    for (int i = 0; i < tsp_path.size() - 1; i++) {
-        Edge* edge = tsp_path[i]->getEdge(tsp_path[i + 1]->getId());
-        cost += edge->getWeight();
-    }
-
     std::cout << "Cost: " << cost << '\n';
     std::cout << "Elapsed Time: " << duration.count() << " s\n\n";
 }
@@ -186,9 +180,7 @@ void Menu::calculateNearestNeighborTSP() {
 
 
 void Menu::init() {
-    bool exit = false;
-
-    while (!exit) {
+    while (true) {
         utils::clearScreen();
         std::cout << "Menu Options:\n";
         std::cout << "1. Select Graph\n";
@@ -210,8 +202,7 @@ void Menu::init() {
                 break;
             case 3:
                 utils::clearScreen();
-                exit = true;
-                break;
+                return;
             default:
                 utils::clearScreen();
                 std::cout << "Invalid choice. Please try again.\n\n";

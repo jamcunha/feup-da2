@@ -126,8 +126,9 @@ public:
     * @brief Calculate the TSP path using the Nearest Neighbor algorithm
     * 
     * @param tsp_path The vector to store the TSP path (output parameter)
+    * @return double The cost of the TSP path
     */
-    void tspNearestNeighbor(std::vector<Vertex*>& tsp_path);
+    double tspNearestNeighbor(std::vector<Vertex*>& tsp_path);
 
     void twoOptAlgorithm(std::vector<Vertex *> &tsp_path);
 };

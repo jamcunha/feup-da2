@@ -285,8 +285,7 @@ double Graph::triangularApproximation(std::vector<Vertex *> &tsp_path) {
     return cost;
 }
 
-// TODO: return cost
-void Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
+double Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
     tsp_path.clear();
     std::size_t num_vertices = vertexSet.size();
     std::vector<bool> visited(num_vertices, false);
@@ -322,6 +321,14 @@ void Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path) {
         tsp_path.push_back(vertexSet[start_idx]);
     }
     twoOptAlgorithm(tsp_path);
+
+    double cost = 0;
+    for (int i = 0; i < tsp_path.size() - 1; i++) {
+        Edge* edge = tsp_path[i]->getEdge(tsp_path[i + 1]->getId());
+        cost += edge->getWeight();
+    }
+
+    return cost;
 }
 
 
