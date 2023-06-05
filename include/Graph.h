@@ -16,6 +16,16 @@ private:
      */
     std::unordered_map<int, Vertex *> vertexSet;
 
+    /**
+     * @brief Recursive call of the tspBruteforce function
+     * @details Time Complexity: O(|V|!)
+     * 
+     * @param current The current vertex being visited
+     * @param current_cost The current cost of the path
+     * @param num_visited The number of vertexes visited
+     * @param min_cost The minimum cost found so far
+     * @param tsp_path The vector to store the TSP path of the minimum cost (output parameter)
+     */
     void tspBacktrackBruteforce(Vertex* current, double current_cost, int num_visited, double& min_cost, std::vector<Vertex *> &tsp_path);
 
     /**
@@ -98,7 +108,72 @@ public:
      */
     void dijkstra(Vertex* source);
 
+    /**
+     * @brief Bruteforce algorithm to calculate the TSP path using backtracking
+     * @details Time Complexity: O(|V|+|V|!)
+     * 
+     * @param tsp_path The vector to store the TSP path (output parameter)
+     * @return double The cost of the TSP path
+     */
     double tspBruteforce(std::vector<Vertex *> &tsp_path);
+
+    /**
+     * @brief Minimum Spanning Tree (MST) using Prim's algorithm
+     * @details Time Complexity: O(|V|+|E|log(|V|))
+     * 
+     * @param source Beginning vertex of the MST
+     * @param result Vector to store the MST vertexes in the preorder (output parameter)
+     * @param cost Cost of the MST (output parameter)
+     */
+    void prim(Vertex *source, std::vector<Vertex *> &result, double &cost);
+
+    /**
+     * @brief Runs a DFS to get the preorder of an MST graph
+     * @details Time Complexity: O(|V|+|E|)
+     * 
+     * @param current Current vertex being visited
+     * @param result Vector to store the MST vertexes in the preorder (output parameter)
+     * @param cost Cost of the MST (output parameter)
+     * @param prev Previous vertex
+     */
+    void preorderMST(Vertex *current, std::vector<Vertex *> &result, double &cost, Vertex* &prev);
+
+    /**
+     * @brief Find the weight of an edge
+     * 
+     * @param source Source vertex
+     * @param dest Destination vertex
+     * @return double Weight of the edge
+     */
+    double findWeightEdge(int source, int dest);
+
+    /**
+     * @brief Calculate the TSP path using the Triangular Approximation Heuristic
+     * @details Time Complexity:  O((|V| + |E|)log(|V|) + |V|)
+     * 
+     * @param tsp_path The vector to store the TSP path (output parameter)
+     * @return double The cost of the TSP path
+     */
+    double triangularApproximation(std::vector<Vertex *> &tsp_path);
+
+    /**
+    * @brief Calculate the TSP path using the Nearest Neighbor algorithm (with an optional use of 2-opt algorithm)
+    * @details Time Complexity: O(|V|^2) if two_opt_iterations = 0, O(|V|^2 * K) where K is the number of iterations of the 2-opt algorithm
+    * 
+    * @param tsp_path The vector to store the TSP path (output parameter)
+    * @param two_opt_iterations Number of iterations of the 2-opt algorithm
+    * @return double The cost of the TSP path
+    */
+    double tspNearestNeighbor(std::vector<Vertex*>& tsp_path, unsigned int two_opt_iterations);
+
+    /**
+     * @brief Calculate the TSP path using the 2-opt heuristic
+     * @details Time Complexity: O(|V|^2 * K) where K is the number of iterations
+     * 
+     * @param tsp_path The vector to store the TSP path (output parameter)
+     * @param two_opt_iterations Number of iterations of the 2-opt algorithm
+     */
+    void twoOptAlgorithm(std::vector<Vertex *> &tsp_path, unsigned int two_opt_iterations);
 
     /**
      * @brief Get graph's number of vertexes
@@ -113,14 +188,6 @@ public:
      * @return std::unordered_map<int, Vertex *> vertexSet
      */
     std::unordered_map<int, Vertex *> getVertexSet() const;
-
-    void prim(Vertex *source, std::vector<Vertex *> &result, Graph* mst, double &cost);
-
-    void preorderMST(Vertex *current, std::vector<Vertex *> &result, double &cost, Vertex* &prev);
-
-    double findWeightEdge(int source, int dest);
-
-    double triangularApproximation(std::vector<Vertex *> &tsp_path);
 };
 
 #endif // FEUP_DA2_GRAPH_H

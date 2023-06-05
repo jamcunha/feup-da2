@@ -192,7 +192,8 @@ std::unordered_map<int, Vertex *> Graph::getVertexSet() const {
     return this->vertexSet;
 }
 
-void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph* mst, double &cost) {
+void Graph::prim(Vertex* source, std::vector<Vertex*> &result, double &cost) {
+    Graph* mst = new Graph(_coordinate_mode);
     MutablePriorityQueue<Vertex> pq;
     for (auto v: vertexSet) {
         LongLatVertex* llv = dynamic_cast<LongLatVertex*>(v.second);
@@ -238,6 +239,7 @@ void Graph::prim(Vertex* source, std::vector<Vertex*> &result, Graph* mst, doubl
     Vertex* v = mst->findVertex(0);
     Vertex* prev = nullptr;
     preorderMST(v, result, cost, prev);
+    delete mst;
 }
 
 void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, double &cost, Vertex* &prev){
@@ -275,12 +277,94 @@ void Graph::preorderMST(Vertex* current, std::vector<Vertex*> &result, double &c
 double Graph::triangularApproximation(std::vector<Vertex *> &tsp_path) {
     double cost = 0;
     
-    Graph* mst = new Graph(_coordinate_mode);
     Vertex* source = findVertex(0);
-    prim(source, tsp_path, mst, cost);
+    prim(source, tsp_path, cost);
     cost += findWeightEdge((*(tsp_path.rbegin()))->getId(), source->getId());
     tsp_path.push_back(source);
 
-    delete mst;
     return cost;
+}
+
+double Graph::tspNearestNeighbor(std::vector<Vertex*>& tsp_path, unsigned int two_opt_iterations) {
+    tsp_path.clear();
+    std::size_t num_vertices = vertexSet.size();
+    std::vector<bool> visited(num_vertices, false);
+
+    std::size_t start_idx = 0;
+    Vertex* current = vertexSet[start_idx];
+    tsp_path.push_back(current);
+    visited[start_idx] = true;
+
+    while (tsp_path.size() < num_vertices) {
+        double min_edge_weight = std::numeric_limits<double>::infinity();
+        Vertex* next_vertex = nullptr;
+
+        for (Edge* edge : current->getAdj()) {
+            Vertex* neighbor_vertex = edge->getDest();
+            if (!visited[neighbor_vertex->getId()] && edge->getWeight() < min_edge_weight) {
+                min_edge_weight = edge->getWeight();
+                next_vertex = neighbor_vertex;
+            }
+        }
+
+        if (next_vertex == nullptr) {
+            break;
+        }
+
+        tsp_path.push_back(next_vertex);
+        visited[next_vertex->getId()] = true;
+        current = next_vertex;
+    }
+
+    if (tsp_path.size() == num_vertices) {
+        Edge* final_edge = tsp_path.back()->getEdge(vertexSet[start_idx]->getId());
+        tsp_path.push_back(vertexSet[start_idx]);
+    }
+    twoOptAlgorithm(tsp_path, two_opt_iterations);
+
+    double cost = 0;
+    for (int i = 0; i < tsp_path.size() - 1; i++) {
+        Edge* edge = tsp_path[i]->getEdge(tsp_path[i + 1]->getId());
+        cost += edge->getWeight();
+    }
+
+    return cost;
+}
+
+// Function to perform the 2-opt swap
+void perform2OptSwap(std::vector<Vertex*>& tsp_path, int i, int k) {
+    while (i < k) {
+        std::swap(tsp_path[i % tsp_path.size()], tsp_path[k % tsp_path.size()]);
+        i++;
+        k--;
+    }
+}
+
+// 2-opt algorithm
+void Graph::twoOptAlgorithm(std::vector<Vertex*>& tsp_path, unsigned int two_opt_iterations) {
+    int n = tsp_path.size();
+    unsigned int iterations = 0;
+    bool improvement = true;
+
+    while (improvement && iterations < two_opt_iterations) {
+        iterations++;
+        improvement = false;
+        for (int i = 0; i < n - 2; ++i) {
+            for (int k = i + 2; k < n; ++k) {
+                auto a = tsp_path[i]->getEdge(tsp_path[i + 1]->getId());
+                auto b = tsp_path[k]->getEdge(tsp_path[(k + 1) % n]->getId());
+                auto c = tsp_path[i]->getEdge(tsp_path[k]->getId());
+                auto d = tsp_path[i + 1]->getEdge(tsp_path[(k + 1) % n]->getId());
+                if (a == nullptr || b == nullptr || c == nullptr || d == nullptr) {
+                    continue;
+                }
+                double currentDistance = a->getWeight() + b->getWeight();
+                double newDistance = c->getWeight() + d->getWeight();
+                if (newDistance < currentDistance) {
+                    perform2OptSwap(tsp_path, i + 1, k);
+                    improvement = true;
+                }
+            }
+        }
+    }
 }
