@@ -18,6 +18,7 @@ private:
 
     /**
      * @brief Recursive call of the tspBruteforce function
+     * @details Time Complexity: O(|V|!)
      * 
      * @param current The current vertex being visited
      * @param current_cost The current cost of the path
@@ -109,6 +110,7 @@ public:
 
     /**
      * @brief Bruteforce algorithm to calculate the TSP path using backtracking
+     * @details Time Complexity: O(|V|+|V|!)
      * 
      * @param tsp_path The vector to store the TSP path (output parameter)
      * @return double The cost of the TSP path
@@ -116,21 +118,8 @@ public:
     double tspBruteforce(std::vector<Vertex *> &tsp_path);
 
     /**
-     * @brief Get graph's number of vertexes
-     * 
-     * @return int Number of vertexes
-     */
-    int getNumVertex() const;
-
-    /**
-     * @brief Get graph's vertexes
-     * 
-     * @return std::unordered_map<int, Vertex *> vertexSet
-     */
-    std::unordered_map<int, Vertex *> getVertexSet() const;
-
-    /**
      * @brief Minimum Spanning Tree (MST) using Prim's algorithm
+     * @details Time Complexity: O(|V|+|E|log(|V|))
      * 
      * @param source Beginning vertex of the MST
      * @param result Vector to store the MST vertexes in the preorder (output parameter)
@@ -140,6 +129,7 @@ public:
 
     /**
      * @brief Runs a DFS to get the preorder of an MST graph
+     * @details Time Complexity: O(|V|+|E|)
      * 
      * @param current Current vertex being visited
      * @param result Vector to store the MST vertexes in the preorder (output parameter)
@@ -159,6 +149,7 @@ public:
 
     /**
      * @brief Calculate the TSP path using the Triangular Approximation Heuristic
+     * @details Time Complexity:  O((|V| + |E|)log(|V|) + |V|)
      * 
      * @param tsp_path The vector to store the TSP path (output parameter)
      * @return double The cost of the TSP path
@@ -167,6 +158,7 @@ public:
 
     /**
     * @brief Calculate the TSP path using the Nearest Neighbor algorithm (with an optional use of 2-opt algorithm)
+    * @details Time Complexity: O(|V|^2) if two_opt_iterations = 0, O(|V|^2 * K) where K is the number of iterations of the 2-opt algorithm
     * 
     * @param tsp_path The vector to store the TSP path (output parameter)
     * @param two_opt_iterations Number of iterations of the 2-opt algorithm
@@ -176,11 +168,26 @@ public:
 
     /**
      * @brief Calculate the TSP path using the 2-opt heuristic
+     * @details Time Complexity: O(|V|^2 * K) where K is the number of iterations
      * 
      * @param tsp_path The vector to store the TSP path (output parameter)
      * @param two_opt_iterations Number of iterations of the 2-opt algorithm
      */
     void twoOptAlgorithm(std::vector<Vertex *> &tsp_path, unsigned int two_opt_iterations);
+
+    /**
+     * @brief Get graph's number of vertexes
+     * 
+     * @return int Number of vertexes
+     */
+    int getNumVertex() const;
+
+    /**
+     * @brief Get graph's vertexes
+     * 
+     * @return std::unordered_map<int, Vertex *> vertexSet
+     */
+    std::unordered_map<int, Vertex *> getVertexSet() const;
 };
 
 #endif // FEUP_DA2_GRAPH_H
